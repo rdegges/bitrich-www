@@ -5,10 +5,13 @@ Flask-Stormpath==0.0.1
 Jinja2==2.7.2
 MarkupSafe==0.18
 Werkzeug==0.9.4
+coinbase==0.2.0
 gevent==1.0
 greenlet==0.4.2
 gunicorn==18.0
+httplib2==0.8
 itsdangerous==0.23
+oauth2client==1.2
 requests==2.2.1
 stormpath==1.0.1
 stripe==1.12.0

@@ -5,6 +5,7 @@
 
 
 from datetime import datetime
+from json import dumps
 from os import environ
 from uuid import uuid4
 
@@ -25,6 +26,7 @@ from flask.ext.stormpath import (
     user,
 )
 
+from requests import get, post
 from stormpath.error import Error as StormpathError
 
 import stripe
@@ -38,6 +40,8 @@ app.config['STORMPATH_API_KEY_SECRET'] = environ.get('STORMPATH_API_KEY_SECRET')
 app.config['STORMPATH_APPLICATION'] = environ.get('STORMPATH_APPLICATION')
 app.config['STRIPE_SECRET_KEY'] = environ.get('STRIPE_SECRET_KEY')
 app.config['STRIPE_PUBLISHABLE_KEY'] = environ.get('STRIPE_PUBLISHABLE_KEY')
+app.config['COINBASE_API_KEY'] = environ.get('COINBASE_API_KEY')
+app.config['COINBASE_API_SECRET'] = environ.get('COINBASE_API_SECRET')
 
 stormpath_manager = StormpathManager(app)
 stormpath_manager.login_view = '.login'
@@ -130,7 +134,8 @@ def charge():
     # - All investments are 20$.
     # - The default lower limit is 50%.
     # - The default upper limit is 50%.
-    amount = 2000
+    #amount = 2000
+    amount = 100
     lower_limit = request.form.get('lower-limit') or 50
     upper_limit = request.form.get('upper-limit') or 50
     id = uuid4().hex
@@ -148,6 +153,33 @@ def charge():
         currency = 'usd',
         description = 'BitRich Investment',
     )
+
+    # Get current exchange rates:
+    resp = get('https://coinbase.com/api/v1/currencies/exchange_rates')
+    rate = float(resp.json()['usd_to_btc'])
+
+    from time import time
+    from hmac import new as hnew
+    from hashlib import sha256
+
+    nonce = int(time() * 1e6)
+    message = str(nonce) + 'https://coinbase.com/api/v1/buys' + dumps({'qty': rate * (amount / 100)})
+    signature = hnew(app.config['COINBASE_API_SECRET'], message, sha256).hexdigest()
+    resp = post(
+        'https://coinbase.com/api/v1/buys',
+        params = {'api_key': app.config['COINBASE_API_KEY']},
+        headers = {
+            'Content-Type': 'application/json',
+            'ACCESS_KEY': app.config['COINBASE_API_KEY'],
+            'ACCESS_SIGNATURE': signature,
+            'ACCESS_NONCE': nonce,
+        },
+        data = message,
+    )
+    print resp
+    print resp.status_code
+    print resp.text
+    print dumps(resp.json(), indent=2, sort_keys=True)
 
     # Store investment details in Stormpath.
     try:
