@@ -6,6 +6,7 @@
 
 from datetime import datetime
 from os import environ
+from uuid import uuid4
 
 from flask import (
     Flask,
@@ -115,13 +116,7 @@ def dashboard():
     additional data to their account (if they so choose).
     """
     if request.method == 'POST':
-        if request.form.get('birthday'):
-            user.custom_data['birthday'] = request.form.get('birthday')
-
-        if request.form.get('color'):
-            user.custom_data['color'] = request.form.get('color')
-
-        user.save()
+        print 'post on dashboard'
 
     return render_template('dashboard.html')
 
@@ -131,12 +126,33 @@ def charge():
     """
     Charge this user, and take their moneys!
     """
-    amount = request.form.get('amount')
-    lower_limit = request.form.get('lower-limit')
-    upper_limit = request.form.get('upper-limit')
+    # By default, the following is true:
+    # - All investments are 20$.
+    # - The default lower limit is 50%.
+    # - The default upper limit is 50%.
+    amount = 2000
+    lower_limit = request.form.get('lower-limit') or 50
+    upper_limit = request.form.get('upper-limit') or 50
+    id = uuid4().hex
 
+    # Create a Strip customer.
+    customer = stripe.Customer.create(
+        email = user.email,
+        card = request.form['stripeToken'],
+    )
+
+    # Bill the user.
+    stripe.Charge.create(
+        customer = customer.id,
+        amount = amount,
+        currency = 'usd',
+        description = 'BitRich Investment',
+    )
+
+    # Store investment details in Stormpath.
     try:
         user.custom_data['investments'].append({
+            'id': id,
             'created': datetime.utcnow().isoformat(),
             'updated': datetime.utcnow().isoformat(),
             'deposit_amount_usd': amount,
@@ -147,6 +163,7 @@ def charge():
     except:
         user.custom_data['investments'] = []
         user.custom_data['investments'].append({
+            'id': id,
             'created': datetime.utcnow().isoformat(),
             'updated': datetime.utcnow().isoformat(),
             'deposit_amount_usd': amount,
@@ -156,20 +173,6 @@ def charge():
         })
 
     user.save()
-
-    print dict(user.custom_data)
-
-    customer = stripe.Customer.create(
-        email = user.email,
-        card = request.form['stripeToken'],
-    )
-
-    charge = stripe.Charge.create(
-        customer = customer.id,
-        amount = amount,
-        currency = 'usd',
-        description = 'BitRich Investment',
-    )
 
     return redirect(url_for('dashboard'))
 

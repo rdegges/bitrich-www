@@ -3,8 +3,8 @@
 // new investment.
 function update_amount(value) {
   var value = parseFloat(value);
-  if (value < 10) {
-    value = 10.00;
+  if (value < 20) {
+    value = 20.00;
   }
 
   // Round the amount to two decimal places.
@@ -16,7 +16,7 @@ function update_amount(value) {
 function update_lower_limit(value) {
   var value = parseInt(value);
     if (!value) {
-      value = 5;
+      value = 50;
     }
 
     $('#lower-limit').val(value);
@@ -26,7 +26,7 @@ function update_lower_limit(value) {
 function update_upper_limit(value) {
   var value = parseInt(value);
     if (!value) {
-      value = 5;
+      value = 50;
     }
 
     $('#upper-limit').val(value);

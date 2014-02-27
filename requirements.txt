@@ -1,5 +1,6 @@
 Flask==0.10.1
 Flask-Login==0.2.9
+Flask-Script==0.6.7
 Flask-Stormpath==0.0.1
 Jinja2==2.7.2
 MarkupSafe==0.18
