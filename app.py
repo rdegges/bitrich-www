@@ -4,6 +4,7 @@
 """
 
 
+from datetime import datetime
 from os import environ
 
 from flask import (
@@ -25,6 +26,8 @@ from flask.ext.stormpath import (
 
 from stormpath.error import Error as StormpathError
 
+import stripe
+
 
 app = Flask(__name__)
 app.debug = True
@@ -32,9 +35,13 @@ app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 app.config['STORMPATH_API_KEY_ID'] = environ.get('STORMPATH_API_KEY_ID')
 app.config['STORMPATH_API_KEY_SECRET'] = environ.get('STORMPATH_API_KEY_SECRET')
 app.config['STORMPATH_APPLICATION'] = environ.get('STORMPATH_APPLICATION')
+app.config['STRIPE_SECRET_KEY'] = environ.get('STRIPE_SECRET_KEY')
+app.config['STRIPE_PUBLISHABLE_KEY'] = environ.get('STRIPE_PUBLISHABLE_KEY')
 
 stormpath_manager = StormpathManager(app)
 stormpath_manager.login_view = '.login'
+
+stripe.api_key = app.config['STRIPE_SECRET_KEY']
 
 
 ##### Website
@@ -117,6 +124,54 @@ def dashboard():
         user.save()
 
     return render_template('dashboard.html')
+
+
+@app.route('/charge', methods=['POST'])
+def charge():
+    """
+    Charge this user, and take their moneys!
+    """
+    amount = request.form.get('amount')
+    lower_limit = request.form.get('lower-limit')
+    upper_limit = request.form.get('upper-limit')
+
+    try:
+        user.custom_data['investments'].append({
+            'created': datetime.utcnow().isoformat(),
+            'updated': datetime.utcnow().isoformat(),
+            'deposit_amount_usd': amount,
+            'deposit_amount_bitcoin': None,
+            'lower_limit': lower_limit,
+            'upper_limit': upper_limit,
+        })
+    except:
+        user.custom_data['investments'] = []
+        user.custom_data['investments'].append({
+            'created': datetime.utcnow().isoformat(),
+            'updated': datetime.utcnow().isoformat(),
+            'deposit_amount_usd': amount,
+            'deposit_amount_bitcoin': None,
+            'lower_limit': lower_limit,
+            'upper_limit': upper_limit,
+        })
+
+    user.save()
+
+    print dict(user.custom_data)
+
+    customer = stripe.Customer.create(
+        email = user.email,
+        card = request.form['stripeToken'],
+    )
+
+    charge = stripe.Charge.create(
+        customer = customer.id,
+        amount = amount,
+        currency = 'usd',
+        description = 'BitRich Investment',
+    )
+
+    return redirect(url_for('dashboard'))
 
 
 @app.route('/logout')
