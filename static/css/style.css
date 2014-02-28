@@ -6,6 +6,17 @@
   text-align: center;
 }
 
+#home .container {
+  background-image: url('/static/images/hero.jpg');
+}
+
+body {
+  background: -webkit-linear-gradient(#f5c72a, #eab50e); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#f5c72a, #eab50e); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#f5c72a, #eab50e); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#f5c72a, #eab50e); /* Standard syntax (must be last) */
+}
+
 .center-me {
   margin-left: auto;
   margin-right: auto;
