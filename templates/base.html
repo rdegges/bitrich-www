@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BitRich {% block title %}{% endblock %}</title>
+    <title>Bitrich {% block title %}{% endblock %}</title>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
@@ -28,7 +28,7 @@
             <li {% if 'login' in request.endpoint %}class="active"{% endif %}><a href="{{ url_for('login') }}">Login</a></li>
           {% endif %}
         </ul>
-        <h3 class="nav-home"><a "href="{{ url_for('index') }}">BitRich</a></h3>
+        <h3 class="nav-home"><a href="{{ url_for('index') }}">BITRICH</a></h3>
       </div>
     </div>
     {% block body %}{% endblock %}
