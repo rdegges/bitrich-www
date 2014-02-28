@@ -67,7 +67,7 @@ def sell_or_not():
                         user = user,
                         differential = differential,
                         investment = investment,
-                    ).encode("utf_8").decode("unicode_escape"))
+                    ).encode('utf_8').decode('unicode_escape'))
                     sendgrid.send(message)
 
                 if differential > investment['upper_limit']:
@@ -75,6 +75,13 @@ def sell_or_not():
                         differential,
                         investment['upper_limit'],
                     )
+                    message.set_html(render_template(
+                        'email/upper_sell_email.html',
+                        user = user,
+                        differential = differential,
+                        investment = investment,
+                    ).encode('utf_8').decode('unicode_escape'))
+                    sendgrid.send(message)
 
 
 if __name__ == '__main__':
