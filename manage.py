@@ -38,12 +38,26 @@ def sell_or_not():
                 # btc_adjusted is the amount of bitcoin this user's money is
                 # worth at current rates
                 btc_adjusted = total_btc * (total_usd_cents / 100.0)
-                print 'btc_adjusted:', btc_adjusted
+                print 'btc_adjusted (old):', btc_adjusted
+                print 'rate (new):', rate
 
                 # Now that we know how much bitcoin is currently worth, vs what
                 # the user has -- we can calculate the net gain of this user's
                 # investment.
-                print 'differential: ', ((total_btc - btc_adjusted) / total_btc) * 100
+                differential = float('%.2f' % (((rate - btc_adjusted) / btc_adjusted) * 100))
+                print 'differential: %s%%' % differential
+
+                if differential < (investment['lower_limit'] * -1):
+                    print "We've lost %s%%! Time to sell! Our lower limit is %s%%!" % (
+                        differential,
+                        investment['lower_limit'],
+                    )
+
+                if differential > investment['upper_limit']:
+                    print "We've made %s%%! Time to sell! Our upper limit is %s%%!" % (
+                        differential,
+                        investment['upper_limit'],
+                    )
 
 
 if __name__ == '__main__':
