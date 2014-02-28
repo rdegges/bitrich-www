@@ -12,6 +12,10 @@
   margin-bottom: 0em;
 }
 
+.logo {
+  margin-top: 1em;
+}
+
 #about h2, #pricing h2, #team h2 {
   margin-top: 2em;
   font-weight: 300;
