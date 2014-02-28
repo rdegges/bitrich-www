@@ -32,6 +32,51 @@
   color: #797361;
 }
 
+.dashboard h3 {
+  color: #fff;
+  background-color: #f5c72a;
+  font-weight: 400;
+  font-size: 20px;
+  padding-left: 2em;
+  margin-bottom: 0em;
+  line-height: 2em;
+}
+
+.dashboard p, .dashboard #p {
+  background-color: #fff;
+  color: #454237;
+  font-size: 40px;
+  font-weight: 300;
+  padding-left: 1em;
+  margin-top: 0em;
+  line-height: 3em;
+}
+
+.dashboard label {
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 400;
+  color: #454237;
+}
+
+.dashboard input {
+  border: 1px solid #d9d8d2;
+  height: 90px;
+  width: 150px;
+  padding: auto;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.dashboard h2 {
+  font-size: 43px;
+  font-weight: 100;
+  color: #f5c72a;
+  margin-left: 0em;
+  padding-left: 0em;
+}
+
 #testimonials, #faq, #investors {
   background-color: #fff;
 }
@@ -47,7 +92,11 @@
   height: 5em;
 }
 
-.home-container {
+.dashboard-container {
+  padding-left: 0em;
+  padding-right: 0em;
+}
+.home-container, .dashboard-container {
   margin-bottom: 0em;
   padding-bottom: 0em;
 }
@@ -56,7 +105,7 @@
   text-align: center;
 }
 
-#home .container {
+#home .container, .dashboard .container {
   background: url('/static/images/hero.png') no-repeat bottom;
 }
 
@@ -66,6 +115,10 @@ body {
   background: -moz-linear-gradient(#f5c72a, #eab50e); /* For Firefox 3.6 to 15 */
   background: linear-gradient(#f5c72a, #eab50e); /* Standard syntax (must be last) */
   font-family: 'Roboto', sans-serif;
+}
+
+.dashboard-container, .body-dashboard {
+  background: #f2f1eb !important;
 }
 
 .center-me {
@@ -219,11 +272,6 @@ body {
 .login .last-p {
   margin-bottom: 2em;
 }
-
-.dashboard h2 {
-  font-weight: bold;
-}
-
 .dashboard .data {
   color: #DF691A;
   font-weight: bold;

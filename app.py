@@ -140,7 +140,13 @@ def dashboard():
     if request.method == 'POST':
         print 'post on dashboard'
 
-    return render_template('dashboard.html')
+    total_btc = total_usd = 0
+    for investment in user.custom_data['investments']:
+        total_usd += investment['deposit_amount_usd']
+        total_btc += investment['deposit_amount_bitcoin']
+
+    return render_template('dashboard.html', total_usd=total_usd,
+            total_btc=total_btc)
 
 
 @app.route('/charge', methods=['POST'])
