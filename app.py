@@ -27,7 +27,7 @@ from flask.ext.stormpath import (
 )
 
 from requests import get, post
-from sendgrid import SendGridClient
+from sendgrid import SendGridClient, Mail
 from stormpath.error import Error as StormpathError
 
 import stripe
@@ -86,6 +86,19 @@ def register():
         return render_template('register.html', error=err.message)
 
     login_user(_user, remember=True)
+
+    message = Mail(
+        to = _user.email,
+        subject = 'Welcome to BitRich!',
+        text = '',
+        from_email = 'randall@stormpath.com',
+    )
+    message.set_html(render_template(
+        'email/verification_email.html',
+        user = user,
+    ).encode('utf_8').decode('unicode_escape'))
+    sendgrid.send(message)
+
     return redirect(url_for('dashboard'))
 
 
