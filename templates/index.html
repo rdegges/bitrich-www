@@ -12,6 +12,17 @@
         <a class="bigbutton btn btn-lg btn-danger" href="#about" role="button">Learn More</a>
         <a class="bigbutton btn btn-lg btn-danger" href="{{ url_for('register') }}" role="button">Free Sign Up</a>
       </div>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <div class="col-lg-6">
+        <h3>Current Market Price</h3>
+        <div id="btc-quote"></div>
+        <script type="text/javascript" src="//cdn-gh.firebase.com/btcquote/embed.js"></script>
+      </div>
       <br />
       <br />
     </div>
@@ -160,4 +171,46 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div id="team" class="horizontal-section" href="team">
+      <div class="row">
+        <div class="col-lg-2">
+          <img src="" height="100" width="100">
+        </div>
+        <div class="col-lg-4">
+          <p class="bold">Randall - Cofounder and CTO</p>
+          <p class="justify">The technical genius behind BitRich, Randall can
+          just as often be found chugging energy drinks as slinging code.</p>
+        </div>
+        <div class="col-lg-2">
+          <img src="" height="100" width="100">
+        </div>
+        <div class="col-lg-4">
+          <p class="bold">Kelsey - Cofounder and COO</p>
+          <p class="justify">Heading up all things opoerations, Kelsey keeps
+          BitRich humming along and constantly plies the members of the team
+          with ganja-laced baked goods.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2">
+          <img src="" height="100" width="100">
+        </div>
+        <div class="col-lg-4">
+          <p class="bold">Brent - Cofounder and CMO</p>
+          <p class="justify">BitRich's nefarious marketing mastermind, Brent is
+          an avid photographer, and veggie-burger-with-bacon enthusiast.</p>
+        </div>
+        <div class="col-lg-2">
+          <img src="" height="100" width="100">
+        </div>
+        <div class="col-lg-4">
+          <p class="bold">Julie - Cofounder and CCI</p>
+          <p class="justify">As our Chief Coin Inspector, Julie spends her days
+          "monitoring" coins and fueling her obsession with shiny objects.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}
