@@ -32,11 +32,11 @@
   color: #797361;
 }
 
-#testimonials, #faq {
+#testimonials, #faq, #investors {
   background-color: #fff;
 }
 
-#testimonials  h2, #faq h2 {
+#testimonials  h2, #faq h2, #investors h2 {
   margin-top: 2em;
   font-weight: 300;
   font-size: 44px;
@@ -139,21 +139,21 @@ body {
   border-left: none;
 }
 
-#faq .bold {
+#faq .bold, #investors .bold {
   font-weight: 400;
   font-size: 16px;
   color: #797361;
   text-align: left;
 }
 
-#faq p {
+#faq p, #investors p {
   text-align: justify;
   font-weight: 300;
   line-height: 23px;
   color: #797361;
 }
 
-#faq .justify {
+#faq .justify, #investors .justify {
   margin-bottom: 2em;
 }
 
@@ -247,6 +247,10 @@ body {
 .btn-sign-up {
   background-color: #fff;
   color: #f5c72a;
+}
+
+.special-blah {
+  background-color: #fff;
 }
 
 .nav-home a:visited, .nav-home a:hover, .nav-home a:active, .nav-home a:link {

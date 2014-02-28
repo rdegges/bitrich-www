@@ -230,23 +230,26 @@
     </div>
     <div id="blah">&nbsp;</div>
   </div>
-  <div class="row">
-    <div id="investors" class="horizontal-section" href="investors">
+  <div id="investors" class="horizontal-section" href="investors">
+    <div class="row">
       <h2>Investors</h2>
       <div class="row">
+        <div class="col-md-1">&nbsp</div>
         <div class="col-md-2">
-          <img src="{{ url_for('static', filename='images/barack.jpg') }}" height="100" width="100">
+          <img src="{{ url_for('static', filename='images/barack.jpg') }}"
+          height="118" width="132">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <p class="bold">Barack Obama</p>
           <p class="justify">Obama proudly announced the newest extension of the
           economic stimulus plan: a whopping 5% investment of GDP into
           Bitrich.</p>
         </div>
         <div class="col-md-2">
-          <img src="{{ url_for('static', filename='images/nick.jpg') }}" height="100" width="100">
+          <img src="{{ url_for('static', filename='images/nick.jpg') }}"
+          height="118" width="132">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <p class="bold">Nick the Sendgrid Guy</p>
           <p class="justify">Investor. Adviser. Religious anti-powerpoint
           prognosticator.</p>
@@ -254,7 +257,7 @@
       </div>
     </div>
   </div>
-    <div id="blah">&nbsp;</div>
+    <div class="special-blah" id="blah">&nbsp;</div>
   </div>
   </div>
 {% endblock %}
