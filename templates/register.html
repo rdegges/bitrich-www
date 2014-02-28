@@ -17,41 +17,19 @@
                 {{ error }}
               </div>
             {% endif %}
-            <div class="form-group">
-              <div class="col-lg-4">
+            <div class="omgform">
+              <div class="form-group">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email" autofocus>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="password" class="col-lg-4 control-label">Password</label>
-              <div class="col-lg-4">
+              <div class="form-group">
                 <input type="password" class="form-control" id="password" name="password" placeholder="Password">
               </div>
-            </div>
-            <div class="form-group">
-              <div class="col-lg-10 col-lg-offset-4">
-                <button type="submit" class="btn btn-primary">Register</button>
+              <div class="form-group creatish">
+                <button type="submit" class="btn btn-primary">Create Account</button>
               </div>
             </div>
           </fieldset>
         </form>
-        <h2>A Note About Stormpath Security</h2>
-        <p>
-          In a real environment, you should <b>only deploy your application</b>
-          behind SSL / TLS to avoid having user credentials sent in plain text
-          over the network.
-        </p>
-        <p>
-          Stormpath user creation is incredibly secure, is not susceptible to any
-          known vulnerabilities (MITM, hashing issues, replay attacks, etc.), and
-          provides you with a number of options to improve security (including
-          built-in email verification, among other things).  We will not verify
-          your account by email now, but this can be easily enabled.
-        </p>
-        <p class="last-p">
-          Stormpath can also be configured to allow for weaker (or force stronger)
-          passwords, so it can fit into any application workflow.
-        </p>
       </div>
     </div>
   </div>

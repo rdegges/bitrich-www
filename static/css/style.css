@@ -13,6 +13,17 @@
   width: 40em;
 }
 
+.omgform {
+  width: 20em;
+  margin-top: 5em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.creatish {
+  text-align: center;
+}
+
 .register h1 {
   font-size: 7em;
 }
