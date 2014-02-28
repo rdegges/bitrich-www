@@ -57,21 +57,16 @@
                 <label for="lower-limit" class="col-md-3">Lower Limit</label>
                 <label for="upper-limit" class="col-md-3">Upper Limit</label>
               </div>
+              <div class="row">
                 <div class="col-md-3">
-                  <input type="text" class="form-control" id="lower-limit" name="lower-limit" placeholder="50%" onchange="update_lower_limit(this.value);">
+                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['lower_limit'] * (investment['deposit_amount_usd'] / 100))|float  }}%" readonly>
                 </div>
                 <div class="col-md-3">
-                  <input type="text" class="form-control" id="upper-limit" name="upper-limit" placeholder="50%" onchange="update_upper_limit(this.value);">
+                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['upper_limit'] * (investment['deposit_amount_usd'] / 100))|float }}%" readonly>
                 </div>
-              <table class="table">
-                <tr>
-                  <td>Lower Limit</td>
-                  <td>Upper Limit</td>
-                </tr>
-                <tr>
-                  <td>{{ '%d' % (investment['lower_limit'] * (investment['deposit_amount_usd'] / 100))|float }}%</td>
-                  <td>{{ '%d' % (investment['upper_limit'] * (investment['deposit_amount_usd'] / 100))|float }}%</td>
-                </tr>
+                <div class="col-md-1">&nbsp;</div>
+                <div class="col-md-3">
+                </div>
               </table>
             </div>
           {% endfor %}
