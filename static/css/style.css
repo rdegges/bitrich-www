@@ -52,11 +52,41 @@
   line-height: 3em;
 }
 
+.dashboard #p {
+  padding-bottom: 1em;
+}
+
+button.stripe-button-el {
+  height: 89px;
+  width: 258px;
+  background: #fff !important;
+  border: 3px solid #f5c72a;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  margin: 0em;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -3em !important;
+}
+
+button.stripe-button-el span {
+  background: #fff !important;
+  color: #f5c72a;
+  font-size: 32px;
+  font-weight: 400;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
 .dashboard label {
   text-transform: uppercase;
   font-size: 13px;
   font-weight: 400;
   color: #454237;
+  text-align: center;
+  margin-bottom: -3em;
 }
 
 .dashboard input {
@@ -64,9 +94,12 @@
   height: 90px;
   width: 150px;
   padding: auto;
+  font-size: 50px;
   text-align: center;
   margin-top: auto;
   margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .dashboard h2 {

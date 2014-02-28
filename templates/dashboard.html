@@ -18,57 +18,66 @@
           <div id="p">
             <form action="{{ url_for('charge') }}" method="POST" class="bs-example form-horizontal">
               <div class="row">
-                <div class="col-md-1">&nbsp;</div>
-                <label for="lower-limit" class="col-md-3">Deposit</label>
+                <label for="lower-limit" class="col-md-3">Lower Limit</label>
                 <label for="upper-limit" class="col-md-3">Upper Limit</label>
               </div>
               <div class="row">
-                <div class="col-md-1">&nbsp;</div>
                 <div class="col-md-3">
                   <input type="text" class="form-control" id="lower-limit" name="lower-limit" placeholder="50%" onchange="update_lower_limit(this.value);">
                 </div>
                 <div class="col-md-3">
                   <input type="text" class="form-control" id="upper-limit" name="upper-limit" placeholder="50%" onchange="update_upper_limit(this.value);">
                 </div>
+                <div class="col-md-1">&nbsp;</div>
+                <div class="col-md-3" style="text-align: center; margin-top:
+                  -.5em">
+                  <input type="hidden" id="amount" name="amount" value="2000">
+                  <script
+                    src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+                    data-key="{{ config['STRIPE_PUBLISHABLE_KEY'] }}"
+                    data-image="http://www.extremetech.com/wp-content/uploads/2013/08/bitcoin1.jpg"
+                    data-name="BitRich"
+                    data-description="A single, non-refundable deposit."
+                    data-email="{{ user['email'] }}"
+                    data-amount="2000">
+                  </script>
+                </div>
               </div>
-
-              <div class="col-md-4">
-                <input type="text" class="form-control" id="lower-limit" name="lower-limit" placeholder="50%" onchange="update_lower_limit(this.value);">
-              </div>
-              <div class="col-md-5">
-                <span>How much money (as a percentage of your investment) are
-                  you willing to lose?</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="upper-limit" class="col-md-2 control-label">Upper Limit</label>
-              <div class="col-md-4">
-                <input type="text" class="form-control" id="upper-limit" name="upper-limit" placeholder="50%" onchange="update_upper_limit(this.value);">
-              </div>
-              <div class="col-md-5">
-                <span>At what point should we sell your bitcoin and return your
-                  money?</span>
-              </div>
-            </div>
-            <div class="form-group">
-              <input type="hidden" id="amount" name="amount" value="2000">
-              <div class="col-md-10 col-md-offset-2">
-                <script
-                  src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
-                  data-key="{{ config['STRIPE_PUBLISHABLE_KEY'] }}"
-                  data-image="http://www.extremetech.com/wp-content/uploads/2013/08/bitcoin1.jpg"
-                  data-name="BitRich"
-                  data-description="A single, non-refundable deposit."
-                  data-email="{{ user['email'] }}"
-                  data-amount="2000">
-                </script>
-                <!--<button id="stripeButton" class="btn btn-primary">Make Investment</button>-->
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>
-    </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Current Investments</h2>
+          {% for investment in user.custom_data['investments'] %}
+            <h3>ID: {{ investment['id'] }} <i>({{ investment['created'] }})</i></h3>
+            <div id="p">
+              <div class="row">
+                <label for="lower-limit" class="col-md-3">Lower Limit</label>
+                <label for="upper-limit" class="col-md-3">Upper Limit</label>
+              </div>
+                <div class="col-md-3">
+                  <input type="text" class="form-control" id="lower-limit" name="lower-limit" placeholder="50%" onchange="update_lower_limit(this.value);">
+                </div>
+                <div class="col-md-3">
+                  <input type="text" class="form-control" id="upper-limit" name="upper-limit" placeholder="50%" onchange="update_upper_limit(this.value);">
+                </div>
+              <table class="table">
+                <tr>
+                  <td>Lower Limit</td>
+                  <td>Upper Limit</td>
+                </tr>
+                <tr>
+                  <td>{{ '%d' % (investment['lower_limit'] * (investment['deposit_amount_usd'] / 100))|float }}%</td>
+                  <td>{{ '%d' % (investment['upper_limit'] * (investment['deposit_amount_usd'] / 100))|float }}%</td>
+                </tr>
+              </table>
+            </div>
+          {% endfor %}
+          </table>
+        </div>
+      </div>
 
 
 
