@@ -2,7 +2,7 @@
   margin-top: 15em;
 }
 
-#about {
+#about, #pricing, #team {
   background: #f2f1eb;
   margin-top: 0em;
 }
@@ -12,31 +12,31 @@
   margin-bottom: 0em;
 }
 
-#about h2 {
+#about h2, #pricing h2, #team h2 {
   margin-top: 2em;
   font-weight: 300;
   font-size: 44px;
   color: #c69807;
 }
 
-#about h3 {
+#about h3, #pricing h3, #team h3 {
   font-weight: 300;
   font-size: 27px;
   color: #c69807;
 }
 
-#about p {
+#about p, #pricing p, #team p {
   font-weight: 300;
   font-size: 16px;
   line-height: 21px;
   color: #797361;
 }
 
-#testimonials {
+#testimonials, #faq {
   background-color: #fff;
 }
 
-#testimonials  h2{
+#testimonials  h2, #faq h2 {
   margin-top: 2em;
   font-weight: 300;
   font-size: 44px;
@@ -76,6 +76,27 @@ body {
   width: 40em;
 }
 
+#team p {
+  text-align: justify;
+}
+
+#team .row {
+  margin-bottom: 2em;
+}
+
+#team .bold {
+  font-weight: 400 !important;
+  font-size: 16px !important;
+  color: #797361 !important;
+}
+
+#team .justify {
+  font-weight: 300 !important;
+  font-size: 15px;
+  line-height: 23px;
+  color: #797361 !important;
+}
+
 .center-me h1 {
   font: 65px #fff;
   font-weight: 500;
@@ -109,6 +130,38 @@ body {
   width: 30.3em;
 }
 
+#testimonials blockquote, #testimonials footer {
+  text-align: justify;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 23px;
+  color: #797361;
+  border-left: none;
+}
+
+#faq .bold {
+  font-weight: 400;
+  font-size: 16px;
+  color: #797361;
+  text-align: left;
+}
+
+#faq p {
+  text-align: justify;
+  font-weight: 300;
+  line-height: 23px;
+  color: #797361;
+}
+
+#faq .justify {
+  margin-bottom: 2em;
+}
+
+#testimonials footer {
+  font-weight: bold;
+  margin-top: .5em;
+}
+
 .horizontal-section {
   text-align: center;
   /*margin-top: 10em;*/
@@ -119,7 +172,23 @@ body {
 }
 
 .huge-pricing {
-  font-size: 5em;
+  margin-top: 1em;
+  font-size: 51px !important;
+  color: #454237;
+}
+
+#pricing img {
+  margin-top: 2.65em;
+}
+
+#pricing .bold {
+  margin-top: 2em;
+  font-weight: bold;
+  text-align: left;
+}
+
+#pricing p {
+  text-align: left;
 }
 
 .bold {
