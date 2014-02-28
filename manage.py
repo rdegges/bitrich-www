@@ -56,7 +56,6 @@ def sell_or_not():
                     from_email = 'randall@stormpath.com',
                 )
 
-                investment['lower_limit'] = .0001
                 if differential < (investment['lower_limit'] * -1):
                     print "We've lost %s%%! Time to sell! Our lower limit is %s%%!" % (
                         differential,
@@ -70,6 +69,7 @@ def sell_or_not():
                     ).encode('utf_8').decode('unicode_escape'))
                     sendgrid.send(message)
 
+                investment['upper_limit'] = -.5
                 if differential > investment['upper_limit']:
                     print "We've made %s%%! Time to sell! Our upper limit is %s%%!" % (
                         differential,
