@@ -2,6 +2,34 @@
   margin-top: 15em;
 }
 
+#about {
+  background: #f2f1eb;
+  margin-top: 0em;
+}
+
+#intro-buttons {
+  padding-bottom: 20em;
+  margin-bottom: 0em;
+}
+
+#about h2 {
+  margin-top: 2em;
+  font-weight: 300;
+  font-size: 44px;
+  color: #c69807;
+}
+
+#about h3 {
+  font-weight: 300;
+  font-size: 27px;
+  color: #c69807;
+}
+
+.home-container {
+  margin-bottom: 0em;
+  padding-bottom: 0em;
+}
+
 #welcome h1, #welcome h2 {
   text-align: center;
 }

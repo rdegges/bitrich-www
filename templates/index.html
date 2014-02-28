@@ -3,49 +3,44 @@
 
 {% block body %}
   <div id="home">
-  <div class="container">
-  <div class="row">
-    <div class="center-me">
-      <h1>Get Rich, Bitches.</h1>
-      <h2>Bigger than MtGox from day one.</h2>
-    </div>
-      <div class="centered button-holder">
-        <a class="btn btn-lg btn-danger btn-learn-more" href="#about" role="button">Learn More</a>
-        <a class="btn btn-lg btn-danger btn-sign-up" href="{{ url_for('register') }}" role="button">Free Sign Up</a>
+    <div class="container home-container">
+      <div class="row">
+        <div class="center-me">
+          <h1>Get Rich, Bitches.</h1>
+          <h2>Bigger than MtGox from day one.</h2>
+        </div>
+        <div id="intro-buttons" class="centered button-holder">
+          <a class="btn btn-lg btn-danger btn-learn-more" href="#about" role="button">Learn More</a>
+          <a class="btn btn-lg btn-danger btn-sign-up" href="{{ url_for('register') }}" role="button">Free Sign Up</a>
+        </div>
+        <!--
+        <div class="col-md-6">
+          <h3>Current Market Price</h3>
+          <div id="btc-quote"></div>
+          <script type="text/javascript" src="//cdn-gh.firebase.com/btcquote/embed.js"></script>
+        </div>
+        -->
       </div>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <div class="col-md-6">
-        <h3>Current Market Price</h3>
-        <div id="btc-quote"></div>
-        <script type="text/javascript" src="//cdn-gh.firebase.com/btcquote/embed.js"></script>
-      </div>
-      <br />
-      <br />
     </div>
   </div>
-  <div class="row">
-    <div id="about" class="horizontal-section" href="about">
-      <h2>How does Bitrich Work?</h2>
+  <div id="about" class="horizontal-section" href="about">
+    <div class="row">
+      <h2>How Does BITRICH Work?</h2>
 
       <div class="col-md-4">
-        <img src="{{ url_for('static', filename='images/makin-bank-yo.png') }}" height="200" width="200"/>
+        <img src="{{ url_for('static', filename='images/how1.png') }}" height="208" width="292"/>
         <h3>Deposit Money</h3>
         <p>Give us 20$, and we convert it to bitcoin
         </p>
       </div>
       <div class="col-md-4">
-        <img src="{{ url_for('static', filename='images/dolla-dolla-bills-yall.png') }}" height="200" width="200"/>
+        <img src="{{ url_for('static', filename='images/how2.png') }}" height="208" width="292"/>
         <h3>Set Upper & Lower Limits</h3>
         <p>Investments are cashed out based on upper and lower limits. We
         default to 50%, but ultimately, the choice is yours.</p>
       </div>
       <div class="col-md-4">
-        <img src="{{ url_for('static', filename='images/what-money-does.png') }}" height="200" width="200"/>
+        <img src="{{ url_for('static', filename='images/how3.png') }}" height="208" width="292"/>
         <h3>Sit Back and Relax</h3>
         <p>Watch your money pile up or turn to ashes.</p>
       </div>
