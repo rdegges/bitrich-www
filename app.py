@@ -41,7 +41,6 @@ app.config['STORMPATH_APPLICATION'] = environ.get('STORMPATH_APPLICATION')
 app.config['STRIPE_SECRET_KEY'] = environ.get('STRIPE_SECRET_KEY')
 app.config['STRIPE_PUBLISHABLE_KEY'] = environ.get('STRIPE_PUBLISHABLE_KEY')
 app.config['COINBASE_API_KEY'] = environ.get('COINBASE_API_KEY')
-app.config['COINBASE_API_SECRET'] = environ.get('COINBASE_API_SECRET')
 
 stormpath_manager = StormpathManager(app)
 stormpath_manager.login_view = '.login'
@@ -158,28 +157,13 @@ def charge():
     resp = get('https://coinbase.com/api/v1/currencies/exchange_rates')
     rate = float(resp.json()['usd_to_btc'])
 
-    from time import time
-    from hmac import new as hnew
-    from hashlib import sha256
-
-    nonce = int(time() * 1e6)
-    message = str(nonce) + 'https://coinbase.com/api/v1/buys' + dumps({'qty': rate * (amount / 100)})
-    signature = hnew(app.config['COINBASE_API_SECRET'], message, sha256).hexdigest()
     resp = post(
-        'https://coinbase.com/api/v1/buys',
-        params = {'api_key': app.config['COINBASE_API_KEY']},
+        'https://coinbase.com/api/v1/buys?api_key=%s' % app.config['COINBASE_API_KEY'],
         headers = {
             'Content-Type': 'application/json',
-            'ACCESS_KEY': app.config['COINBASE_API_KEY'],
-            'ACCESS_SIGNATURE': signature,
-            'ACCESS_NONCE': nonce,
         },
-        data = message,
+        data = dumps({'qty': rate * (amount / 100)}),
     )
-    print resp
-    print resp.status_code
-    print resp.text
-    print dumps(resp.json(), indent=2, sort_keys=True)
 
     # Store investment details in Stormpath.
     try:
@@ -188,7 +172,7 @@ def charge():
             'created': datetime.utcnow().isoformat(),
             'updated': datetime.utcnow().isoformat(),
             'deposit_amount_usd': amount,
-            'deposit_amount_bitcoin': None,
+            'deposit_amount_bitcoin': float(resp.json()['transfer']['btc']['amount']),
             'lower_limit': lower_limit,
             'upper_limit': upper_limit,
         })
@@ -199,7 +183,7 @@ def charge():
             'created': datetime.utcnow().isoformat(),
             'updated': datetime.utcnow().isoformat(),
             'deposit_amount_usd': amount,
-            'deposit_amount_bitcoin': None,
+            'deposit_amount_bitcoin': float(resp.json()['transfer']['btc']['amount']),
             'lower_limit': lower_limit,
             'upper_limit': upper_limit,
         })
