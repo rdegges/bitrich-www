@@ -6,6 +6,17 @@
   text-align: center;
 }
 
+.center-me {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 40em;
+}
+
+.register h1 {
+  font-size: 7em;
+}
+
 .button-holder {
   margin-left: auto;
   margin-right: auto;
