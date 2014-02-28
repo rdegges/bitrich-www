@@ -209,6 +209,18 @@ def charge():
 
     user.save()
 
+    message = Mail(
+        to = user.email,
+        subject = 'Thanks for your Investment!',
+        text = '',
+        from_email = 'randall@stormpath.com',
+    )
+    message.set_html(render_template(
+        'email/deposit_email.html',
+        user = user,
+    ).encode('utf_8').decode('unicode_escape'))
+    sendgrid.send(message)
+
     return redirect(url_for('dashboard'))
 
 
