@@ -2,16 +2,49 @@
 
 
 {% block body %}
-  <div class="col-lg-12" id="welcome">
-    <h1>Get Rich, Bitches.</h1>
-    <h2>Bigger than MtGox from day one.</h2>
-    <br />
-    <br />
-    <div class="centered button-holder">
-      <a class="bigbutton btn btn-lg btn-danger" href="#about" role="button">Learn More</a>
-      <a class="bigbutton btn btn-lg btn-danger" href="{{ url_for('register') }}" role="button">Free Sign Up</a>
+  <div class="row">
+    <div class="col-lg-12" id="welcome">
+      <h1>Get Rich, Bitches.</h1>
+      <h2>Bigger than MtGox from day one.</h2>
+      <br />
+      <br />
+      <div class="centered button-holder">
+        <a class="bigbutton btn btn-lg btn-danger" href="#about" role="button">Learn More</a>
+        <a class="bigbutton btn btn-lg btn-danger" href="{{ url_for('register') }}" role="button">Free Sign Up</a>
+      </div>
+      <br />
+      <br />
     </div>
-    <br />
-    <br />
   </div>
+  <div class="row">
+    <div id="about" href="about">
+      <h2>How does BitRich Work?</h2>
+
+      <div class="col-lg-4">
+        <img src="" height="200" width="200"/>
+        <h3>Deposit Money</h3>
+        <p>Give us $20, and we convert it to Bitcoin.</p>
+      </div>
+      <div class="col-lg-4">
+        <img src="" height="200" width="200"/>
+        <h3>Set Upper & Lower Limits</h3>
+        <p>Investments are cashed out based on upper and lower limits. We
+        default to 50%, but ultimately, the choice is yours.</p>
+      </div>
+      <div class="col-lg-4">
+        <img src="" height="200" width="200"/>
+        <h3>Sit Back and Relax</h3>
+        <p>Watch your money pile up or turn into ashes.</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div id="testimonials">
+        <div class="col-lg-5">
+          <blockquote>I was a skeptic - I thought BitRich was just another one of those
+          online "get rich quick" scams. But thanks to BitRich I was able to pay
+          off all my online gambling debt and retire to Ahu Dhabi."
+          <footer>Steve Sleazeball</footer>
+          </blockquote>
+
 {% endblock %}

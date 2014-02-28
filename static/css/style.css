@@ -12,6 +12,20 @@
   width: 30.3em;
 }
 
+#about {
+  text-align: center;
+  margin-top: 10em;
+}
+
+#about h2 {
+  font-size: 7em;
+  margin-bottom: 1em;
+}
+
+.centered {
+  text-align: center;
+}
+
 #welcome li {
   font-size: 1.5em;
 }
