@@ -6,12 +6,12 @@
   <div class="container">
   <div class="row">
     <div class="center-me">
-      <h1>BitRich</h1>
-      <h2>Ready to get rich? Sign up for a free account!</h2>
+      <h1>Get Rich, Bitches.</h1>
+      <h2>Bigger than MtGox from day one.</h2>
     </div>
       <div class="centered button-holder">
-        <a class="bigbutton btn btn-lg btn-danger" href="#about" role="button">Learn More</a>
-        <a class="bigbutton btn btn-lg btn-danger" href="{{ url_for('register') }}" role="button">Free Sign Up</a>
+        <a class="btn btn-lg btn-danger btn-learn-more" href="#about" role="button">Learn More</a>
+        <a class="btn btn-lg btn-danger btn-sign-up" href="{{ url_for('register') }}" role="button">Free Sign Up</a>
       </div>
       <br/>
       <br/>
@@ -19,7 +19,7 @@
       <br/>
       <br/>
       <br/>
-      <div class="col-lg-6">
+      <div class="col-md-6">
         <h3>Current Market Price</h3>
         <div id="btc-quote"></div>
         <script type="text/javascript" src="//cdn-gh.firebase.com/btcquote/embed.js"></script>
@@ -32,19 +32,19 @@
     <div id="about" class="horizontal-section" href="about">
       <h2>How does Bitrich Work?</h2>
 
-      <div class="col-lg-4">
+      <div class="col-md-4">
         <img src="{{ url_for('static', filename='images/makin-bank-yo.png') }}" height="200" width="200"/>
         <h3>Deposit Money</h3>
         <p>Give us 20$, and we convert it to bitcoin
         </p>
       </div>
-      <div class="col-lg-4">
+      <div class="col-md-4">
         <img src="{{ url_for('static', filename='images/dolla-dolla-bills-yall.png') }}" height="200" width="200"/>
         <h3>Set Upper & Lower Limits</h3>
         <p>Investments are cashed out based on upper and lower limits. We
         default to 50%, but ultimately, the choice is yours.</p>
       </div>
-      <div class="col-lg-4">
+      <div class="col-md-4">
         <img src="{{ url_for('static', filename='images/what-money-does.png') }}" height="200" width="200"/>
         <h3>Sit Back and Relax</h3>
         <p>Watch your money pile up or turn to ashes.</p>
@@ -55,20 +55,20 @@
     <div id="testimonials" class="horizontal-section" href="testimonials">
       <h2>Testimonials</h2>
       <div class="row">
-        <div class="col-lg-1">
+        <div class="col-md-1">
             <img src="{{ url_for('static', filename='images/steve-sleazeball.png') }}" height="50" width="50"/>
         </div>
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <blockquote>I was a skeptic - I thought BitRich was just another one of those
             online "get rich quick" scams. But thanks to BitRich I was able to pay
             off all my online gambling debt and retire to Ahu Dhabi.
             <footer>Steve Sleazeball</footer>
           </blockquote>
         </div>
-        <div class="col-lg-1">
+        <div class="col-md-1">
             <img src="{{ url_for('static', filename='images/olga-katze.png') }}" height="50" width="50"/>
         </div>
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <blockquote>Before I made millions with BitRich, I used to feed all 67
             of my cats generic WalMart brand cat food.  Because of BitRich, now I
             can feed them Ellen Degeneres's Halo food -- and their fur has never
@@ -78,20 +78,20 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-1">
+        <div class="col-md-1">
             <img src="{{ url_for('static', filename='images/paul-graham.png') }}" height="50" width="50"/>
         </div>
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <blockquote>I was the first investor in BitRich. I knew from the start
             that BitRich would be wildly successful, but even I couldn't have
             predicted how big it would become.
             <footer>Paul Graham</footer>
           </blockquote>
         </div>
-        <div class="col-lg-1">
+        <div class="col-md-1">
             <img src="{{ url_for('static', filename='images/bill-gates.png') }}" height="50" width="50"/>
         </div>
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <blockquote>I know a great idea when I see one, and I knew that
             BitRich was exactly where I wanted to invest my $67 billion dollars.
             Thanks to BitRich, I earned billions more and donated all my
@@ -106,7 +106,7 @@
   <div class="row">
     <div id="pricing" class="horizontal-section" href="pricing">
       <h2>Pricing</h2>
-      <div class="col-lg-6">
+      <div class="col-md-6">
         <p class="huge-pricing">1.00% + 35c</p>
         <p class="bold">A simple rate... if you actually make money.</p>
         <p>You can only invest $20 each time you make a BitRich deposit. If you
@@ -114,7 +114,7 @@
         transaction (to cover fees). If you lose money, we don't get a dime.
         </p>
       </div>
-      <div class="col-lg-6">
+      <div class="col-md-6">
         <img src="{{ url_for('static', filename='images/credit-cards.png') }}" width="500" height="100">
         <p class="bold">We accept all major credit cards.</p>
         <p>We do not charge extra if you use other credit cards.
@@ -126,15 +126,15 @@
     <div id="faq" class="horizontal-section" href="faq">
       <h2>FAQ</h2>
       <div class="row">
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <p class="bold">Is Bitrich legit?</p>
           <p class="justify">We are just as legit as MtGox (read: Only a fool would think
           so).</p>
         </div>
-        <div class="col-lg-2">
+        <div class="col-md-2">
           &nbsp;
         </div>
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <p class="bold">How is my money converted to bitcoin?</p>
           <p class="justify">As soon as you deposit money into Bitrich, we'll convert your
           investment to Bitcoin as the current market rates using
@@ -142,30 +142,30 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <p class="bold">Does BitRich save my credit card information?</p>
           <p class="justify">BitRich never saves credit card info. Our payment processor,
           <a href="https://stripe.com">Stripe</a>, completely handles
           payments.</p>
         </div>
-        <div class="col-lg-2">
+        <div class="col-md-2">
           &nbsp;
         </div>
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <p class="bold">What happens if Bitrich goes under?</p>
           <p class="justify">We do not anticipate going down under. Rest assured, we'll handle
           it at least as well as MtGox.</p>
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <p class="bold">Who came up with this idea?</p>
           <p class="justify">StormHack 0x00</p>
         </div>
-        <div class="col-lg-2">
+        <div class="col-md-2">
           &nbsp;
         </div>
-        <div class="col-lg-5">
+        <div class="col-md-5">
           <p class="bold">Why can't I make a larger investment?</p>
           <p class="justify">Because 'micro-investment' sounds altruistic and 'high-volume, high
           value trading platform' sounds evil.</p>
@@ -177,18 +177,18 @@
     <div id="team" class="horizontal-section" href="team">
       <h2>Team</h2>
       <div class="row">
-        <div class="col-lg-2">
+        <div class="col-md-2">
           <img src="{{ url_for('static', filename='images/randall.jpg') }}" height="100" width="100">
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <p class="bold">Randall - Cofounder and CTO</p>
           <p class="justify">The technical genius behind BitRich, Randall can
           just as often be found chugging energy drinks as slinging code.</p>
         </div>
-        <div class="col-lg-2">
+        <div class="col-md-2">
           <img src="{{ url_for('static', filename='images/kelsey.jpg') }}" height="100" width="100">
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <p class="bold">Kelsey - Cofounder and COO</p>
           <p class="justify">Heading up all things opoerations, Kelsey keeps
           BitRich humming along and constantly plies the members of the team
@@ -196,18 +196,18 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-2">
+        <div class="col-md-2">
           <img src="{{ url_for('static', filename='images/brent.jpg') }}" height="100" width="100">
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <p class="bold">Brent - Cofounder and CMO</p>
           <p class="justify">BitRich's nefarious marketing mastermind, Brent is
           an avid photographer, and veggie-burger-with-bacon enthusiast.</p>
         </div>
-        <div class="col-lg-2">
+        <div class="col-md-2">
           <img src="{{ url_for('static', filename='images/julie.jpg') }}" height="100" width="100">
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <p class="bold">Julie - Cofounder and CCI</p>
           <p class="justify">As our Chief Coin Inspector, Julie spends her days
           "monitoring" coins and fueling her obsession with shiny objects.</p>
@@ -219,19 +219,19 @@
     <div id="investors" class="horizontal-section" href="investors">
       <h2>Investors</h2>
       <div class="row">
-        <div class="col-lg-2">
+        <div class="col-md-2">
           <img src="{{ url_for('static', filename='images/barack.jpg') }}" height="100" width="100">
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <p class="bold">Barack Obama</p>
           <p class="justify">Obama proudly announced the newest extension of the
           economic stimulus plan: a whopping 5% investment of GDP into
           Bitrich.</p>
         </div>
-        <div class="col-lg-2">
+        <div class="col-md-2">
           <img src="{{ url_for('static', filename='images/nick.jpg') }}" height="100" width="100">
         </div>
-        <div class="col-lg-4">
+        <div class="col-md-4">
           <p class="bold">Nick the Sendgrid Guy</p>
           <p class="justify">Investor. Adviser. Religious anti-powerpoint
           prognosticator.</p>
