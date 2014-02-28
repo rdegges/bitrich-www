@@ -138,10 +138,9 @@ def dashboard():
     additional data to their account (if they so choose).
     """
     if request.method == 'POST':
-        print 'post on dashboard'
-
+        print 'post on dashboard' 
     total_btc = total_usd = 0
-    for investment in user.custom_data.get('investments'):
+    for investment in user.custom_data.get('investments', []):
         total_usd += investment['deposit_amount_usd']
         total_btc += investment['deposit_amount_bitcoin']
 
