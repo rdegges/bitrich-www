@@ -24,7 +24,7 @@
   text-align: center;
 }
 
-.register h1 {
+.register h1, .login h1 {
   font-size: 7em;
 }
 
