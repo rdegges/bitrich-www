@@ -27,6 +27,7 @@ from flask.ext.stormpath import (
 )
 
 from requests import get, post
+from sendgrid import SendGridClient
 from stormpath.error import Error as StormpathError
 
 import stripe
@@ -41,6 +42,11 @@ app.config['STORMPATH_APPLICATION'] = environ.get('STORMPATH_APPLICATION')
 app.config['STRIPE_SECRET_KEY'] = environ.get('STRIPE_SECRET_KEY')
 app.config['STRIPE_PUBLISHABLE_KEY'] = environ.get('STRIPE_PUBLISHABLE_KEY')
 app.config['COINBASE_API_KEY'] = environ.get('COINBASE_API_KEY')
+
+sendgrid = SendGridClient(
+    environ.get('SENDGRID_USERNAME'),
+    environ.get('SENDGRID_PASSWORD'),
+)
 
 stormpath_manager = StormpathManager(app)
 stormpath_manager.login_view = '.login'
