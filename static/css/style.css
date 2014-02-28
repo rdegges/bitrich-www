@@ -25,6 +25,28 @@
   color: #c69807;
 }
 
+#about p {
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 21px;
+  color: #797361;
+}
+
+#testimonials {
+  background-color: #fff;
+}
+
+#testimonials  h2{
+  margin-top: 2em;
+  font-weight: 300;
+  font-size: 44px;
+  color: #c69807;
+}
+
+#blah {
+  height: 5em;
+}
+
 .home-container {
   margin-bottom: 0em;
   padding-bottom: 0em;
@@ -89,7 +111,7 @@ body {
 
 .horizontal-section {
   text-align: center;
-  margin-top: 10em;
+  /*margin-top: 10em;*/
 }
 
 .justify {
