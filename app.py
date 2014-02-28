@@ -137,8 +137,6 @@ def dashboard():
     Users can see their personal information on this page, as well as store
     additional data to their account (if they so choose).
     """
-    if request.method == 'POST':
-        print 'post on dashboard' 
     total_btc = total_usd = 0
     for investment in user.custom_data.get('investments', []):
         total_usd += investment['deposit_amount_usd']
