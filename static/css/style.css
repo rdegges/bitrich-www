@@ -12,12 +12,24 @@
   width: 30.3em;
 }
 
-#about {
+.horizontal-section {
   text-align: center;
   margin-top: 10em;
 }
 
-#about h2 {
+.justify {
+  text-align: justify;
+}
+
+.huge-pricing {
+  font-size: 5em;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.horizontal-section h2 {
   font-size: 7em;
   margin-bottom: 1em;
 }
