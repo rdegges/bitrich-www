@@ -1,8 +1,16 @@
-# stormpath-flask-sample
+# BITRICH
 
-A sample Flask application which demonstrates how to successfully use
-[Flask-Stormpath](https://github.com/stormpath/stormpath-flask) to handle
-user authentication and authorization for your web app.
+##How It Works
+
+###Deposit Money
+
+Give us 20$, and we convert it to bitcoin
+
+###Set Upper & Lower Limits
+Investments are cashed out based on upper and lower limits. We default to 50%, but ultimately, the choice is yours.
+
+###Sit Back and Relax
+Watch your money pile up or turn to ashes
 
 
 ## Getting Started
@@ -33,13 +41,10 @@ the rest of the way:
 $ python bootstrap.py
 ```
 
-That's it!  Get suck?  Just email us anytime:
-[support@stormpath.com](mailto:support@stormpath.com)
-
 
 ## Screenshots
 
-Here are some various screenshots of the application (and bootstrap script!), so
+Here are some various screenshots of Bitrich, so
 you can get an idea of what you're in for :)
 
 ![Installing Requirements](https://github.com/stormpath/stormpath-flask-sample/raw/master/assets/installing-requirements.png)
