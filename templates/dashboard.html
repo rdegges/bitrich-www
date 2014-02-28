@@ -55,7 +55,9 @@
             <div id="p">
               <div class="row">
                 <label for="lower-limit" class="col-md-3">Lower Limit</label>
-                <label for="upper-limit" class="col-md-3">Upper Limit</label>
+                <label class="col-md-3">Upper Limit</label>
+                <div class="col-md-1">&nbsp;</div>
+                <label class="col-md-3">Current Value</label>
               </div>
               <div class="row">
                 <div class="col-md-3">
@@ -66,155 +68,12 @@
                 </div>
                 <div class="col-md-1">&nbsp;</div>
                 <div class="col-md-3">
+                  <input type="text" class="form-control special-input" placeholder="${{ '%0.2f' % investment['current_value']|float }}" readonly>
                 </div>
-              </table>
             </div>
-          {% endfor %}
-          </table>
-        </div>
-      </div>
-
-
-
-
-
-
-
-
-
-
           </div>
-        </div>
-      </div>
-
-        <div class="col-md-12">
-          <div class="jumbotron">
-            <br />
-            <br />
-            <p>Welcome to <b>bitrich</b>! Ready to make some money?</p>
-            <p>In this user dashboard, you can:
-            <ul>
-              <li>Make micro investments in Bitcoin using your credit or debit
-              card.</li>
-              <li>View how well your Bitcoin investments are doing (are you
-              beating the market, or losing money?).</li>
-              <li>Cash out your investments and reclaim your money in USD
-              immediately.</li>
-            </ul>
-            <br />
-            <br />
-            <h2>Your Investments</h2>
-
-            <table class="table table-striped table-hover">
-              <thead>
-                <th>ID</th>
-                <th>Date</th>
-                <th>Initial Bitcoin Value</th>
-                <th>Lower Limit</th>
-                <th>Upper Limit</th>
-                <th>Net Gains</th>
-              </thead>
-              <tbody>
-                {% for investment in user.custom_data['investments'] %}
-                  <tr>
-                    <td>{{ investment['id'] }}</td>
-                    <td>{{ investment['created'] }}</td>
-                    <td>{{ investment['deposit_amount_bitcoin'] }}</td>
-                    <td>{{ investment['lower_limit'] }}</td>
-                    <td>{{ investment['upper_limit'] }}</td>
-                    <td>9%</td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
-            <br />
-            <br />
-            <p>Add Investment</p>
-            <p>Investing in Bitcoin is easy. Just fill out the fields below, then
-            press 'Make Investment'.</p>
-            <form action="{{ url_for('charge') }}" method="POST" class="bs-example form-horizontal">
-              <!--
-              <div class="form-group">
-                <label for="amount" class="col-md-2 control-label">Amount</label>
-                <div class="col-md-4">
-                  <input type="text" class="form-control" id="amount" name="amount" placeholder="10.00" onchange="update_amount(this.value);">
-                </div>
-                <div class="col-md-5">
-                  <span><b>NOTE</b>: Minimum investment is 10$.</span>
-                </div>
-              </div>
-              -->
-
-              <div class="form-group">
-                <label for="lower-limit" class="col-md-2 control-label">Lower Limit</label>
-                <div class="col-md-4">
-                  <input type="text" class="form-control" id="lower-limit" name="lower-limit" placeholder="50%" onchange="update_lower_limit(this.value);">
-                </div>
-                <div class="col-md-5">
-                  <span>How much money (as a percentage of your investment) are
-                    you willing to lose?</span>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="upper-limit" class="col-md-2 control-label">Upper Limit</label>
-                <div class="col-md-4">
-                  <input type="text" class="form-control" id="upper-limit" name="upper-limit" placeholder="50%" onchange="update_upper_limit(this.value);">
-                </div>
-                <div class="col-md-5">
-                  <span>At what point should we sell your bitcoin and return your
-                    money?</span>
-                </div>
-              </div>
-              <div class="form-group">
-                <input type="hidden" id="amount" name="amount" value="2000">
-                <div class="col-md-10 col-md-offset-2">
-                  <script
-                    src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
-                    data-key="{{ config['STRIPE_PUBLISHABLE_KEY'] }}"
-                    data-image="http://www.extremetech.com/wp-content/uploads/2013/08/bitcoin1.jpg"
-                    data-name="BitRich"
-                    data-description="A single, non-refundable deposit."
-                    data-email="{{ user['email'] }}"
-                    data-amount="2000">
-                  </script>
-                  <!--<button id="stripeButton" class="btn btn-primary">Make Investment</button>-->
-                </div>
-              </div>
-            </form>
-            <br />
-            <br />
-          </div>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </div>
-  <!--
-  <script src="https://checkout.stripe.com/checkout.js"></script>
-  <script>
-    var handler = StripeCheckout.configure({
-      key: '{{ config['STRIPE_PUBLISHABLE_KEY'] }}',
-      image: 'http://www.extremetech.com/wp-content/uploads/2013/08/bitcoin1.jpg',
-      token: function(token, args) {
-        // Use the token to create the charge with a server-side script.
-        // You can access the token ID with `token.id`
-      }
-    });
-
-    document.getElementById('stripeButton').addEventListener('click', function(e) {
-      var amount = parseFloat($('#amount').val()) * 100;
-      if (!amount) {
-        amount = 1000;
-      }
-
-      // Open Checkout with further options
-      handler.open({
-        name: 'BitRich',
-        description: 'Single, non-refundable deposit.',
-        amount: amount,
-        email: '{{ user["email"] }}',
-      });
-      e.preventDefault();
-    });
-  </script>
-  -->
 {% endblock %}

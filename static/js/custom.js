@@ -15,7 +15,7 @@ function update_amount(value) {
 // Update the limit values (as percentage points).
 function update_lower_limit(value) {
   var value = parseInt(value);
-    if (!value) {
+    if (!value || value < 1) {
       value = 50;
     }
 
@@ -25,7 +25,7 @@ function update_lower_limit(value) {
 // Update the limit values (as percentage points).
 function update_upper_limit(value) {
   var value = parseInt(value);
-    if (!value) {
+    if (!value || value < 1) {
       value = 50;
     }
 

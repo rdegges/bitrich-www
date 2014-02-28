@@ -137,10 +137,20 @@ def dashboard():
     Users can see their personal information on this page, as well as store
     additional data to their account (if they so choose).
     """
+    resp = get('https://coinbase.com/api/v1/currencies/exchange_rates')
+    rate = float(resp.json()['usd_to_btc'])
+
     total_btc = total_usd = 0
-    for investment in user.custom_data.get('investments', []):
+    for i, investment in enumerate(user.custom_data.get('investments', [])):
         total_usd += investment['deposit_amount_usd']
         total_btc += investment['deposit_amount_bitcoin']
+
+        total_btc = float(investment['deposit_amount_bitcoin'])
+        total_usd_cents = investment['deposit_amount_usd']
+        btc_adjusted = total_btc * (total_usd_cents / 100.0)
+        differential = float('%.2f' % (((rate - btc_adjusted) / btc_adjusted) * 100))
+        current_value = (investment['deposit_amount_usd']/100) + ((investment['deposit_amount_usd']/100) * (differential / 100))
+        user.custom_data['investments'][i]['current_value'] = current_value
 
     return render_template('dashboard.html', total_usd=total_usd,
             total_btc=total_btc)
@@ -155,10 +165,11 @@ def charge():
     # - All investments are 20$.
     # - The default lower limit is 50%.
     # - The default upper limit is 50%.
-    #amount = 2000
     amount = 100
-    lower_limit = request.form.get('lower-limit') or 50
-    upper_limit = request.form.get('upper-limit') or 50
+    #lower_limit = int(request.form.get('lower-limit')) or 50
+    #upper_limit = int(request.form.get('upper-limit')) or 50
+    lower_limit = 50
+    upper_limit = 50
     id = uuid4().hex
 
     # Create a Strip customer.

@@ -102,6 +102,10 @@ button.stripe-button-el span {
   margin-right: auto;
 }
 
+.dashboard .special-input {
+  width: 250px;
+}
+
 .dashboard h2 {
   font-size: 43px;
   font-weight: 100;
