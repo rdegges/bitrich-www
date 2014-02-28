@@ -141,7 +141,7 @@ def dashboard():
         print 'post on dashboard'
 
     total_btc = total_usd = 0
-    for investment in user.custom_data['investments']:
+    for investment in user.custom_data.get('investments'):
         total_usd += investment['deposit_amount_usd']
         total_btc += investment['deposit_amount_bitcoin']
 
