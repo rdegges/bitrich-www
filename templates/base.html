@@ -25,7 +25,7 @@
             <li {% if 'dashboard' in request.endpoint %}class="active"{% endif %}><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
             <li><a href="{{ url_for('logout') }}">Logout</a></li>
           {% else %}
-            <li {% if 'login' in request.endpoint %}class="active"{% endif %}><a href="{{ url_for('register') }}">Register</a></li>
+            <li {% if 'login' in request.endpoint %}class="active"{% endif %}><a href="{{ url_for('login') }}">login</a></li>
           {% endif %}
         </ul>
         <h3 class="nav-home"><a href="{{ url_for('index') }}">BITRICH</a></h3>
