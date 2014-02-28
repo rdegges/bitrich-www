@@ -1,5 +1,15 @@
 #welcome {
-  margin-top: 6em;
+  margin-top: 15em;
+}
+
+#welcome h1, #welcome h2 {
+  text-align: center;
+}
+
+.button-holder {
+  margin-left: auto;
+  margin-right: auto;
+  width: 30.3em;
 }
 
 #welcome li {
@@ -37,4 +47,8 @@
   font-size: 24px;
   line-height: 1.33;
   border-radius: 0;
+}
+
+.nav-home a:visited, .nav-home a:hover, .nav-home a:active, .nav-home a:link {
+  text-decoration: none;
 }
