@@ -1,5 +1,7 @@
 # BITRICH
 
+## *Note: This is a joke. Do not invest your money using Bitrich.*
+
 ##How It Works
 
 ###Deposit Money
@@ -40,6 +42,3 @@ the rest of the way:
 ```bash
 $ python bootstrap.py
 ```
-
-
-## Screenshots
