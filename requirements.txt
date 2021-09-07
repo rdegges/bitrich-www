@@ -1,10 +1,10 @@
-Flask==0.10.1
+Flask==0.12.3
 Flask-Login==0.2.9
 Flask-Script==0.6.7
 Flask-Stormpath==0.0.1
-Jinja2==2.7.2
+Jinja2==2.11.3
 MarkupSafe==0.18
-Werkzeug==0.9.4
+Werkzeug==0.11.6
 coinbase==0.2.0
 gevent==1.0
 greenlet==0.4.2
