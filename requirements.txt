@@ -12,7 +12,7 @@ gunicorn==18.0
 httplib2==0.8
 itsdangerous==0.23
 oauth2client==1.2
-requests==2.2.1
+requests==2.3.0
 sendgrid==0.2.8
 smtpapi==0.1.1
 stormpath==1.0.1
