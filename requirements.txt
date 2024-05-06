@@ -4,7 +4,7 @@ Flask-Script==0.6.7
 Flask-Stormpath==0.0.1
 Jinja2==2.11.3
 MarkupSafe==0.18
-Werkzeug==0.15.3
+Werkzeug==3.0.3
 coinbase==0.2.0
 gevent==1.2a1
 greenlet==0.4.2
