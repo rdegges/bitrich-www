@@ -7,10 +7,18 @@
   <div class="dashboard">
     <div class="container dashboard-container">
       <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-8">
           <h2>Dashboard</h2>
           <h3>Current Balance</h3>
-          <p>${{ '%0.2f' % (total_usd / 100)|float }} or {{ total_btc }} BTC</p>
+          <p>
+            ${{ '{:0.2f}'.format(total_usd) }}
+            or {{ '{:0.8f}'.format(total_btc) }} BTC
+          </p>
+          {% if market_rate %}
+            <p class="text-muted">
+              Live BTC price: ${{ '{:,.2f}'.format(market_rate) }} / BTC
+            </p>
+          {% endif %}
         </div>
       </div>
       <div class="row">
@@ -19,29 +27,43 @@
           <div id="p">
             <form action="{{ url_for('charge') }}" method="POST" class="bs-example form-horizontal">
               <div class="row">
-                <label for="lower-limit" class="col-md-3">Lower Limit</label>
-                <label for="upper-limit" class="col-md-3">Upper Limit</label>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <input type="text" class="form-control" id="lower-limit" name="lower-limit" placeholder="50%" onchange="update_lower_limit(this.value);">
+                <div class="col-md-4">
+                  <label for="amount" class="control-label">Amount (USD)</label>
+                  <input type="number"
+                         class="form-control"
+                         id="amount"
+                         name="amount"
+                         min="{{ min_deposit }}"
+                         max="{{ max_deposit }}"
+                         step="1"
+                         value="{{ min_deposit }}"
+                         required>
+                  <small class="text-muted">Between ${{ min_deposit }} and ${{ max_deposit }}</small>
                 </div>
                 <div class="col-md-3">
-                  <input type="text" class="form-control" id="upper-limit" name="upper-limit" placeholder="50%" onchange="update_upper_limit(this.value);">
+                  <label for="lower-limit" class="control-label">Lower Limit %</label>
+                  <input type="number"
+                         class="form-control"
+                         id="lower-limit"
+                         name="lower-limit"
+                         min="1"
+                         max="100"
+                         value="50"
+                         onchange="update_lower_limit(this.value);">
                 </div>
-                <div class="col-md-1">&nbsp;</div>
-                <div class="col-md-3" style="text-align: center; margin-top:
-                  -.5em">
-                  <input type="hidden" id="amount" name="amount" value="2000">
-                  <script
-                    src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
-                    data-key="{{ config['STRIPE_PUBLISHABLE_KEY'] }}"
-                    data-image="http://www.extremetech.com/wp-content/uploads/2013/08/bitcoin1.jpg"
-                    data-name="BitRich"
-                    data-description="A single, non-refundable deposit."
-                    data-email="{{ user['email'] }}"
-                    data-amount="2000">
-                  </script>
+                <div class="col-md-3">
+                  <label for="upper-limit" class="control-label">Upper Limit %</label>
+                  <input type="number"
+                         class="form-control"
+                         id="upper-limit"
+                         name="upper-limit"
+                         min="1"
+                         max="100"
+                         value="50"
+                         onchange="update_upper_limit(this.value);">
+                </div>
+                <div class="col-md-2" style="margin-top: 25px;">
+                  <button type="submit" class="btn btn-danger btn-block">Simulate</button>
                 </div>
               </div>
             </form>
@@ -51,29 +73,53 @@
       <div class="row">
         <div class="col-md-12">
           <h2>Current Investments</h2>
-          {% for investment in user.custom_data['investments'] %}
-            <h3>ID: {{ investment['id'] }} <i>({{ investment['created'] }})</i></h3>
-            <div id="p">
-              <div class="row">
-                <label for="lower-limit" class="col-md-3">Lower Limit</label>
-                <label class="col-md-3">Upper Limit</label>
-                <div class="col-md-1">&nbsp;</div>
-                <label class="col-md-3">Current Value</label>
+          {% if investments %}
+            {% for investment in investments %}
+              <h3>ID: {{ investment.public_id }} <small>({{ investment.created_at.strftime('%Y-%m-%d %H:%M') }})</small></h3>
+              <div id="p">
+                <div class="row">
+                  <div class="col-md-3">
+                    <label>Principal</label>
+                    <input type="text"
+                           class="form-control"
+                           value="${{ '{:0.2f}'.format(investment.principal_usd()) }}"
+                           readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <label>Current Value</label>
+                    <input type="text"
+                           class="form-control special-input"
+                           value="${{ '{:0.2f}'.format(investment.current_value) }}"
+                           readonly>
+                  </div>
+                  <div class="col-md-2">
+                    <label>Performance</label>
+                    <input type="text"
+                           class="form-control"
+                           value="{{ '{:+0.2f}'.format(investment.differential) }}%"
+                           readonly>
+                  </div>
+                  <div class="col-md-2">
+                    <label>Lower Limit</label>
+                    <input type="text"
+                           class="form-control"
+                           value="{{ investment.lower_limit }}%"
+                           readonly>
+                  </div>
+                  <div class="col-md-2">
+                    <label>Upper Limit</label>
+                    <input type="text"
+                           class="form-control"
+                           value="{{ investment.upper_limit }}%"
+                           readonly>
+                  </div>
+                </div>
               </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['lower_limit'] * (investment['deposit_amount_usd'] / 100))|float  }}%" readonly>
-                </div>
-                <div class="col-md-3">
-                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['upper_limit'] * (investment['deposit_amount_usd'] / 100))|float }}%" readonly>
-                </div>
-                <div class="col-md-1">&nbsp;</div>
-                <div class="col-md-3">
-                  <input type="text" class="form-control special-input" placeholder="${{ '%0.2f' % investment['current_value']|float }}" readonly>
-                </div>
-            </div>
-          </div>
-        {% endfor %}
+            {% endfor %}
+          {% else %}
+            <p class="lead">No investments yet. Make your first totally trustworthy deposit above.</p>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

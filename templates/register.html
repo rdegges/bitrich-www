@@ -11,12 +11,6 @@
       <div class="col-lg-6 col-lg-offset-3">
         <form class="bs-example form-horizontal" method="post" action="">
           <fieldset>
-            {% if error %}
-              <div class="alert alert-dismissable alert-danger register-fail">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ error }}
-              </div>
-            {% endif %}
             <div class="omgform">
               <div class="form-group">
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email" autofocus>
