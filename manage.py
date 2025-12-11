@@ -1,88 +1,139 @@
-"""Management scripts and utilities."""
+"""
+Management commands for BitRich.
 
+This module provides CLI commands for administrative tasks
+such as checking investments and sending notifications.
 
+Usage:
+    flask sell-or-not    # Check if investments should be sold
+    flask init-db        # Initialize database
+"""
+
+import click
 from flask import render_template
-from flask.ext.script import Manager
-from flask.ext.stormpath import User
-from requests import get
-from sendgrid import Mail
 
-from app import app, sendgrid
+from app import app, db, User, Investment, send_email, get_bitcoin_rate
 
 
-##### GLOBALS
-manager = Manager(app)
-
-
-##### COMMANDS
-@manager.command
+@app.cli.command('sell-or-not')
 def sell_or_not():
-    resp = get('https://coinbase.com/api/v1/currencies/exchange_rates')
-    rate = float(resp.json()['usd_to_btc'])
-    print 'Checking whether we should sell or not with current BTC rates of:', rate
-
+    """Check all investments and send notifications if limits are reached."""
+    rate = get_bitcoin_rate()
+    
+    if rate <= 0:
+        click.echo('Error: Could not fetch Bitcoin rate.')
+        return
+    
+    click.echo(f'Checking investments with current BTC rate: {rate:.8f} BTC/USD')
+    
     with app.app_context():
-        for user in app.stormpath_manager.application.accounts:
-            user.__class__ = User
-
-            print 'Checking user:', user.email
-            for investment in user.custom_data.get('investments', []):
-
-                print 'Checking investment:', investment['id']
-                print 'Lower sell limit is set to: %s%%' % investment['lower_limit']
-                print 'Upper sell limit is set to: %s%%' % investment['upper_limit']
-
-                # Grab the total BTC / USD that this user has in their account
-                # (when the investment was made).
-                total_btc = float(investment['deposit_amount_bitcoin'])
-                total_usd_cents = investment['deposit_amount_usd']
-
-                # btc_adjusted is the amount of bitcoin this user's money is
-                # worth at current rates
-                btc_adjusted = total_btc * (total_usd_cents / 100.0)
-                print 'btc_adjusted (old):', btc_adjusted
-                print 'rate (new):', rate
-
-                # Now that we know how much bitcoin is currently worth, vs what
-                # the user has -- we can calculate the net gain of this user's
-                # investment.
-                differential = float('%.2f' % (((rate - btc_adjusted) / btc_adjusted) * 100))
-                print 'differential: %s%%' % differential
-
-                message = Mail(
-                    to = user.email,
-                    subject = 'BitRich Investment Notification',
-                    text = '',
-                    from_email = 'randall@stormpath.com',
-                )
-
-                if differential < (investment['lower_limit'] * -1):
-                    print "We've lost %s%%! Time to sell! Our lower limit is %s%%!" % (
-                        differential,
-                        investment['lower_limit'],
-                    )
-                    message.set_html(render_template(
+        users = User.query.all()
+        
+        for user in users:
+            click.echo(f'\nChecking user: {user.email}')
+            
+            for investment in user.investments.all():
+                click.echo(f'  Investment: {investment.uuid}')
+                click.echo(f'    Lower limit: {investment.lower_limit}%')
+                click.echo(f'    Upper limit: {investment.upper_limit}%')
+                
+                # Calculate investment performance
+                total_btc = investment.deposit_amount_bitcoin
+                total_usd_cents = investment.deposit_amount_usd
+                original_usd = total_usd_cents / 100.0
+                
+                # Current value in USD
+                current_usd = total_btc / rate if rate > 0 else 0
+                
+                # Calculate differential
+                if original_usd > 0:
+                    differential = ((current_usd - original_usd) / original_usd) * 100
+                else:
+                    differential = 0
+                
+                click.echo(f'    Original value: ${original_usd:.2f}')
+                click.echo(f'    Current value: ${current_usd:.2f}')
+                click.echo(f'    Differential: {differential:.2f}%')
+                
+                # Check if we should sell based on limits
+                lower_threshold = -investment.lower_limit
+                upper_threshold = investment.upper_limit
+                
+                if differential < lower_threshold:
+                    click.echo(f'    ⚠️  SELL (lower limit reached): Lost {abs(differential):.2f}%!')
+                    
+                    html_content = render_template(
                         'email/lower_sell_email.html',
-                        user = user,
-                        differential = differential,
-                        investment = investment,
-                    ).encode('utf_8').decode('unicode_escape'))
-                    sendgrid.send(message)
-
-                investment['upper_limit'] = -.5
-                if differential > investment['upper_limit']:
-                    print "We've made %s%%! Time to sell! Our upper limit is %s%%!" % (
-                        differential,
-                        investment['upper_limit'],
+                        user=user,
+                        differential=differential,
+                        investment=investment.to_dict(),
                     )
-                    message.set_html(render_template(
+                    send_email(
+                        user.email,
+                        'BitRich Investment Notification - Lower Limit Reached',
+                        html_content
+                    )
+                    
+                elif differential > upper_threshold:
+                    click.echo(f'    ✅ SELL (upper limit reached): Gained {differential:.2f}%!')
+                    
+                    html_content = render_template(
                         'email/upper_sell_email.html',
-                        user = user,
-                        differential = differential,
-                        investment = investment,
-                    ).encode('utf_8').decode('unicode_escape'))
-                    sendgrid.send(message)
+                        user=user,
+                        differential=differential,
+                        investment=investment.to_dict(),
+                    )
+                    send_email(
+                        user.email,
+                        'BitRich Investment Notification - Upper Limit Reached',
+                        html_content
+                    )
+                else:
+                    click.echo('    📊 HOLD (within limits)')
+                
+                # Update current value
+                investment.current_value = current_usd
+            
+            db.session.commit()
+    
+    click.echo('\nDone checking investments.')
+
+
+@app.cli.command('list-users')
+def list_users():
+    """List all registered users."""
+    with app.app_context():
+        users = User.query.all()
+        
+        if not users:
+            click.echo('No users found.')
+            return
+        
+        click.echo(f'Found {len(users)} user(s):')
+        for user in users:
+            investment_count = user.investments.count()
+            click.echo(f'  - {user.email} ({investment_count} investments)')
+
+
+@app.cli.command('create-user')
+@click.argument('email')
+@click.argument('password')
+def create_user(email: str, password: str):
+    """Create a new user account."""
+    with app.app_context():
+        existing = User.query.filter_by(email=email.lower()).first()
+        if existing:
+            click.echo(f'Error: User {email} already exists.')
+            return
+        
+        user = User(email=email.lower())
+        user.set_password(password)
+        
+        db.session.add(user)
+        db.session.commit()
+        
+        click.echo(f'Created user: {email}')
 
 
 if __name__ == '__main__':
-    manager.run()
+    app.cli()

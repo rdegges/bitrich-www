@@ -1,80 +1,212 @@
 {% extends "base.html" %}
 
+{% block title %}- Dashboard{% endblock %}
+{% block bodytag %}bg-light{% endblock %}
 
-{% block title %}- 'Mo Money, 'Mo Problems{% endblock %}
-{% block bodytag %}body-dashboard{% endblock %}
 {% block body %}
-  <div class="dashboard">
-    <div class="container dashboard-container">
-      <div class="row">
-        <div class="col-md-7">
-          <h2>Dashboard</h2>
-          <h3>Current Balance</h3>
-          <p>${{ '%0.2f' % (total_usd / 100)|float }} or {{ total_btc }} BTC</p>
-        </div>
+  <div class="container py-5">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="h2 fw-bold mb-1">Dashboard</h1>
+        <p class="text-muted mb-0">Welcome back, {{ current_user.email }}</p>
       </div>
-      <div class="row">
-        <div class="col-md-12">
-          <h2>New Deposit</h2>
-          <div id="p">
-            <form action="{{ url_for('charge') }}" method="POST" class="bs-example form-horizontal">
-              <div class="row">
-                <label for="lower-limit" class="col-md-3">Lower Limit</label>
-                <label for="upper-limit" class="col-md-3">Upper Limit</label>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <input type="text" class="form-control" id="lower-limit" name="lower-limit" placeholder="50%" onchange="update_lower_limit(this.value);">
-                </div>
-                <div class="col-md-3">
-                  <input type="text" class="form-control" id="upper-limit" name="upper-limit" placeholder="50%" onchange="update_upper_limit(this.value);">
-                </div>
-                <div class="col-md-1">&nbsp;</div>
-                <div class="col-md-3" style="text-align: center; margin-top:
-                  -.5em">
-                  <input type="hidden" id="amount" name="amount" value="2000">
-                  <script
-                    src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
-                    data-key="{{ config['STRIPE_PUBLISHABLE_KEY'] }}"
-                    data-image="http://www.extremetech.com/wp-content/uploads/2013/08/bitcoin1.jpg"
-                    data-name="BitRich"
-                    data-description="A single, non-refundable deposit."
-                    data-email="{{ user['email'] }}"
-                    data-amount="2000">
-                  </script>
+    </div>
+    
+    <!-- Balance Cards -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="bg-primary bg-opacity-10 rounded-3 p-3">
+                  <i class="bi bi-currency-dollar text-primary fs-3"></i>
                 </div>
               </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <h2>Current Investments</h2>
-          {% for investment in user.custom_data['investments'] %}
-            <h3>ID: {{ investment['id'] }} <i>({{ investment['created'] }})</i></h3>
-            <div id="p">
-              <div class="row">
-                <label for="lower-limit" class="col-md-3">Lower Limit</label>
-                <label class="col-md-3">Upper Limit</label>
-                <div class="col-md-1">&nbsp;</div>
-                <label class="col-md-3">Current Value</label>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="text-muted mb-1">Total Invested (USD)</h6>
+                <h3 class="mb-0 fw-bold">${{ '%.2f'|format(total_usd / 100) }}</h3>
               </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['lower_limit'] * (investment['deposit_amount_usd'] / 100))|float  }}%" readonly>
-                </div>
-                <div class="col-md-3">
-                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['upper_limit'] * (investment['deposit_amount_usd'] / 100))|float }}%" readonly>
-                </div>
-                <div class="col-md-1">&nbsp;</div>
-                <div class="col-md-3">
-                  <input type="text" class="form-control special-input" placeholder="${{ '%0.2f' % investment['current_value']|float }}" readonly>
-                </div>
             </div>
           </div>
-        {% endfor %}
+        </div>
       </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="bg-warning bg-opacity-10 rounded-3 p-3">
+                  <i class="bi bi-currency-bitcoin text-warning fs-3"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="text-muted mb-1">Total Bitcoin</h6>
+                <h3 class="mb-0 fw-bold">{{ '%.8f'|format(total_btc) }} BTC</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+          <div class="card-body">
+            <div class="d-flex align-items-center">
+              <div class="flex-shrink-0">
+                <div class="bg-success bg-opacity-10 rounded-3 p-3">
+                  <i class="bi bi-graph-up-arrow text-success fs-3"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="text-muted mb-1">Active Investments</h6>
+                <h3 class="mb-0 fw-bold">{{ investments|length }}</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- New Deposit -->
+    <div class="card border-0 shadow-sm mb-5">
+      <div class="card-header bg-white border-bottom py-3">
+        <h5 class="mb-0 fw-bold">
+          <i class="bi bi-plus-circle me-2 text-primary"></i>New Investment
+        </h5>
+      </div>
+      <div class="card-body p-4">
+        <form action="{{ url_for('charge') }}" method="POST" id="payment-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          
+          <div class="row g-4">
+            <div class="col-md-3">
+              <label for="lower-limit" class="form-label fw-semibold">Lower Limit</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="lower-limit" name="lower-limit" value="50" min="1" max="100">
+                <span class="input-group-text">%</span>
+              </div>
+              <div class="form-text">Sell if value drops by this percentage</div>
+            </div>
+            <div class="col-md-3">
+              <label for="upper-limit" class="form-label fw-semibold">Upper Limit</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="upper-limit" name="upper-limit" value="50" min="1" max="100">
+                <span class="input-group-text">%</span>
+              </div>
+              <div class="form-text">Sell if value rises by this percentage</div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-semibold">Investment Amount</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="text" class="form-control" value="20.00" readonly>
+              </div>
+              <div class="form-text">Fixed amount per investment</div>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <input type="hidden" id="amount" name="amount" value="2000">
+              <script
+                src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key="{{ config['STRIPE_PUBLISHABLE_KEY'] }}"
+                data-name="BitRich"
+                data-description="Bitcoin micro-investment ($20)"
+                data-amount="2000"
+                data-currency="usd"
+                data-locale="auto">
+              </script>
+            </div>
+          </div>
+        </form>
+        
+        <div class="alert alert-info mt-4 mb-0" role="alert">
+          <i class="bi bi-info-circle me-2"></i>
+          <strong>Note:</strong> Each investment is $20, converted to Bitcoin at the current market rate. 
+          We'll notify you when your limits are reached.
+        </div>
+      </div>
+    </div>
+    
+    <!-- Current Investments -->
+    <div class="card border-0 shadow-sm">
+      <div class="card-header bg-white border-bottom py-3">
+        <h5 class="mb-0 fw-bold">
+          <i class="bi bi-wallet2 me-2 text-primary"></i>Your Investments
+        </h5>
+      </div>
+      <div class="card-body p-0">
+        {% if investments %}
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Investment ID</th>
+                  <th>Date</th>
+                  <th>Lower Limit</th>
+                  <th>Upper Limit</th>
+                  <th>Original Value</th>
+                  <th>Current Value</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for investment in investments %}
+                  {% set original_usd = investment.deposit_amount_usd / 100 %}
+                  {% set current_usd = investment.current_value %}
+                  {% set change_pct = ((current_usd - original_usd) / original_usd * 100) if original_usd > 0 else 0 %}
+                  <tr>
+                    <td>
+                      <code class="text-muted">{{ investment.id[:8] }}...</code>
+                    </td>
+                    <td>
+                      <small>{{ investment.created[:10] }}</small>
+                    </td>
+                    <td>
+                      <span class="badge bg-danger bg-opacity-10 text-danger">-{{ investment.lower_limit }}%</span>
+                    </td>
+                    <td>
+                      <span class="badge bg-success bg-opacity-10 text-success">+{{ investment.upper_limit }}%</span>
+                    </td>
+                    <td>${{ '%.2f'|format(original_usd) }}</td>
+                    <td>
+                      <strong>${{ '%.2f'|format(current_usd) }}</strong>
+                    </td>
+                    <td>
+                      {% if change_pct > 0 %}
+                        <span class="badge bg-success">
+                          <i class="bi bi-arrow-up"></i> +{{ '%.1f'|format(change_pct) }}%
+                        </span>
+                      {% elif change_pct < 0 %}
+                        <span class="badge bg-danger">
+                          <i class="bi bi-arrow-down"></i> {{ '%.1f'|format(change_pct) }}%
+                        </span>
+                      {% else %}
+                        <span class="badge bg-secondary">
+                          <i class="bi bi-dash"></i> 0%
+                        </span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="text-center py-5">
+            <div class="mb-4">
+              <i class="bi bi-inbox text-muted" style="font-size: 4rem;"></i>
+            </div>
+            <h5 class="text-muted">No investments yet</h5>
+            <p class="text-muted">Make your first $20 investment to get started!</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    
+    <!-- Disclaimer -->
+    <div class="alert alert-warning mt-4 text-center" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      <strong>Reminder:</strong> This is a joke application. All investments shown are for entertainment purposes only!
     </div>
   </div>
 {% endblock %}

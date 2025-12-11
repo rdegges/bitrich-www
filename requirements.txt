@@ -1,21 +1,32 @@
-Flask==0.12.3
-Flask-Login==0.2.9
-Flask-Script==0.6.7
-Flask-Stormpath==0.0.1
-Jinja2==2.11.3
-MarkupSafe==0.18
-Werkzeug==0.15.3
-coinbase==0.2.0
-gevent==1.2a1
-greenlet==0.4.2
-gunicorn==19.10.0
-httplib2==0.19.0
-itsdangerous==0.23
-oauth2client==1.2
-requests==2.20
-sendgrid==0.2.8
-smtpapi==0.1.1
-stormpath==1.0.1
-stripe==1.12.0
-wsgiref==0.1.2
-urllib3>=1.26.5 # not directly required, pinned by Snyk to avoid a vulnerability
+# Core Flask
+Flask>=3.0.0
+Werkzeug>=3.0.0
+Jinja2>=3.1.0
+MarkupSafe>=2.1.0
+itsdangerous>=2.1.0
+
+# Flask extensions
+Flask-Login>=0.6.3
+Flask-WTF>=1.2.0
+
+# HTTP client
+requests>=2.31.0
+httpx>=0.27.0
+
+# Email
+sendgrid>=6.11.0
+
+# Payments
+stripe>=7.0.0
+
+# Environment management
+python-dotenv>=1.0.0
+
+# Server
+gunicorn>=21.0.0
+
+# Database (for user storage since Stormpath is deprecated)
+Flask-SQLAlchemy>=3.1.0
+
+# Password hashing
+bcrypt>=4.1.0

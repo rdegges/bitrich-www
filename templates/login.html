@@ -1,35 +1,59 @@
 {% extends "base.html" %}
 
+{% block title %}- Login{% endblock %}
 
 {% block body %}
-  <div class="login">
-    <div class="row">
-      <div class="center-me">
-        <h1>BitRich</h1>
-        <h2>Log in and start making money!</h2>
-      </div>
-      <div class="col-lg-6 col-lg-offset-3">
-        <form class="bs-example form-horizontal" method="post" action="">
-          <fieldset>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-5">
+            <div class="text-center mb-4">
+              <h1 class="h3 fw-bold">Welcome Back!</h1>
+              <p class="text-muted">Log in to your BitRich account</p>
+            </div>
+            
             {% if error %}
-              <div class="alert alert-dismissable alert-danger register-fail">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ error }}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
             {% endif %}
-            <div class="omgform">
-              <div class="form-group">
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email" autofocus>
+            
+            <form method="post" action="">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                  <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required autofocus>
+                </div>
               </div>
-              <div class="form-group">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+              
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Your password" required>
+                </div>
               </div>
-              <div class="form-group creatish">
-                <button type="submit" class="btn btn-primary">Log In</button>
+              
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Log In
+                </button>
               </div>
-            </div>
-          </fieldset>
-        </form>
+            </form>
+            
+            <hr class="my-4">
+            
+            <p class="text-center text-muted mb-0">
+              Don't have an account? 
+              <a href="{{ url_for('register') }}" class="text-decoration-none">Sign up for free</a>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
