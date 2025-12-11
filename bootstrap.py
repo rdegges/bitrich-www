@@ -1,77 +1,52 @@
-"""
-    bootstrap.py
-    ~~~~~~~~~~~~
+"""Interactive helper to generate a local .env file."""
 
-    This simple command line script will 'bootstrap' this simple Flask
-    application by performing a few simple tasks:
+from __future__ import annotations
 
-    - It will collect your Stormpath credentials from you (via the command
-      line).
-    - It will create a new Stormpath Application in your account named
-      'flask-stormpath-sample' (so that we can run this project).
+from pathlib import Path
+from secrets import token_hex
 
-    - It will create a `.env` file in this directory which holds 3 environment
-      variables needed for this sample application to run successfully.
-
-    - Lastly, it will tell you how to run this website!
-"""
+BASE_DIR = Path(__file__).resolve().parent
+ENV_PATH = BASE_DIR / '.env'
 
 
-from stormpath.client import Client
+def prompt(message: str, default: str = '') -> str:
+    suffix = f' [{default}]' if default else ''
+    value = input(f'{message}{suffix}: ').strip()
+    return value or default
 
 
-print """
-Hi, and welcome to the flask-stormpath-sample bootstrap app!
+def main() -> None:
+    print('Welcome to the BitRich bootstrap utility.')
+    if ENV_PATH.exists():
+        overwrite = prompt('.env already exists. Overwrite? (y/N)', 'n').lower()
+        if overwrite != 'y':
+            print('Aborting without changes.')
+            return
 
-I'll help get you up and running in no time!  If you don't already have a
-Stormpath account, please create one: https://api.stormpath.com/register
+    secret = prompt('SECRET_KEY', token_hex(32))
+    db_default = f"sqlite:///{(BASE_DIR / 'bitrich.db').resolve()}"
+    database_url = prompt('DATABASE_URL', db_default)
+    stripe_secret = prompt('STRIPE_SECRET_KEY')
+    stripe_publishable = prompt('STRIPE_PUBLISHABLE_KEY')
+    sendgrid_key = prompt('SENDGRID_API_KEY')
+    sender = prompt('SENDGRID_FROM_EMAIL', 'randall@bitrich.fake')
 
-Once you've made an account, be sure to create an API keypair in your
-dashboard, and download your credentials.  You'll need these to continue.
-"""
+    contents = [
+        f'SECRET_KEY={secret}',
+        f'DATABASE_URL={database_url}',
+        f'STRIPE_SECRET_KEY={stripe_secret}',
+        f'STRIPE_PUBLISHABLE_KEY={stripe_publishable}',
+        f'SENDGRID_API_KEY={sendgrid_key}',
+        f'SENDGRID_FROM_EMAIL={sender}',
+    ]
+    ENV_PATH.write_text('\n'.join(contents) + '\n', encoding='utf-8')
 
-id = None
-while not id:
-    id = raw_input('To get started, please enter your Stormpath API Key ID: ')
-
-secret = None
-while not secret:
-    secret = raw_input('Please enter your Stormpath API Key Secret: ')
+    print('Wrote configuration to .env\n')
+    print('Next steps:')
+    print('  1. python -m venv .venv && source .venv/bin/activate')
+    print('  2. pip install -r requirements.txt')
+    print('  3. flask --app app run --debug')
 
 
-client = Client(id=id, secret=secret)
-try:
-    client.applications.create({
-        'name': 'flask-stormpath-sample',
-        'description': 'A sample application required to run the flask-stormpath-sample application.  Feel free to delete this!',
-    }, create_directory=True)
-    print """\n
-I've just created a new Stormpath application in your account named:
-flask-stormpath-sample, when you're done using this sample application, feel
-free to delete this!
-"""
-except:
-    pass
-
-env_file = open('.env', 'wb')
-env_file.write('export STORMPATH_API_KEY_ID=%s\n' % id)
-env_file.write('export STORMPATH_API_KEY_SECRET=%s\n' % secret)
-env_file.write('export STORMPATH_APPLICATION=flask-stormpath-sample\n')
-env_file.close()
-
-print """I've just created a new file in this directory named .env
-
-This file contains all of the necessary environment variables to make this
-sample application run!
-
-Now that we've completed all bootstrapping stuff, all you need to do to get
-your sample application running is to execute the following commands:
-
-    $ source .env
-    $ python app.py
-
-You should then be able to visit 'http://localhost:5000' in your browser to
-play around with the sample application!
-
-Have questions?  Email us!  support@stormpath.com
-"""
+if __name__ == '__main__':
+    main()

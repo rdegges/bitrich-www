@@ -10,14 +10,14 @@
         <div class="col-md-7">
           <h2>Dashboard</h2>
           <h3>Current Balance</h3>
-          <p>${{ '%0.2f' % (total_usd / 100)|float }} or {{ total_btc }} BTC</p>
+          <p>${{ '%0.2f' % (total_usd / 100)|float }} or {{ '%.8f'|format(total_btc) }} BTC</p>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <h2>New Deposit</h2>
           <div id="p">
-            <form action="{{ url_for('charge') }}" method="POST" class="bs-example form-horizontal">
+            <form action="{{ url_for('pages.charge') }}" method="POST" class="bs-example form-horizontal">
               <div class="row">
                 <label for="lower-limit" class="col-md-3">Lower Limit</label>
                 <label for="upper-limit" class="col-md-3">Upper Limit</label>
@@ -39,7 +39,7 @@
                     data-image="http://www.extremetech.com/wp-content/uploads/2013/08/bitcoin1.jpg"
                     data-name="BitRich"
                     data-description="A single, non-refundable deposit."
-                    data-email="{{ user['email'] }}"
+                    data-email="{{ current_user.email }}"
                     data-amount="2000">
                   </script>
                 </div>
@@ -51,7 +51,8 @@
       <div class="row">
         <div class="col-md-12">
           <h2>Current Investments</h2>
-          {% for investment in user.custom_data['investments'] %}
+          {% if investments %}
+          {% for investment in investments %}
             <h3>ID: {{ investment['id'] }} <i>({{ investment['created'] }})</i></h3>
             <div id="p">
               <div class="row">
@@ -62,10 +63,10 @@
               </div>
               <div class="row">
                 <div class="col-md-3">
-                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['lower_limit'] * (investment['deposit_amount_usd'] / 100))|float  }}%" readonly>
+                  <input type="text" class="form-control" placeholder="{{ investment['lower_limit'] }}%" readonly>
                 </div>
                 <div class="col-md-3">
-                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['upper_limit'] * (investment['deposit_amount_usd'] / 100))|float }}%" readonly>
+                  <input type="text" class="form-control" placeholder="{{ investment['upper_limit'] }}%" readonly>
                 </div>
                 <div class="col-md-1">&nbsp;</div>
                 <div class="col-md-3">
@@ -74,6 +75,9 @@
             </div>
           </div>
         {% endfor %}
+        {% else %}
+          <p>No investments yet. Create one above to get started.</p>
+        {% endif %}
       </div>
     </div>
   </div>
