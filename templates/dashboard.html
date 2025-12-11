@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-
 {% block title %}- 'Mo Money, 'Mo Problems{% endblock %}
 {% block bodytag %}body-dashboard{% endblock %}
 {% block body %}
@@ -10,36 +9,36 @@
         <div class="col-md-7">
           <h2>Dashboard</h2>
           <h3>Current Balance</h3>
-          <p>${{ '%0.2f' % (total_usd / 100)|float }} or {{ total_btc }} BTC</p>
+          <p>${{ '%0.2f' % (total_usd / 100)|float }} or {{ '%.8f' % total_btc|float }} BTC</p>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <h2>New Deposit</h2>
           <div id="p">
-            <form action="{{ url_for('charge') }}" method="POST" class="bs-example form-horizontal">
+            <form action="{{ url_for('investment.charge') }}" method="POST" class="bs-example form-horizontal">
+              {{ form.hidden_tag() }}
               <div class="row">
-                <label for="lower-limit" class="col-md-3">Lower Limit</label>
-                <label for="upper-limit" class="col-md-3">Upper Limit</label>
+                <label for="lower-limit" class="col-md-3">Lower Limit (%)</label>
+                <label for="upper-limit" class="col-md-3">Upper Limit (%)</label>
               </div>
               <div class="row">
                 <div class="col-md-3">
-                  <input type="text" class="form-control" id="lower-limit" name="lower-limit" placeholder="50%" onchange="update_lower_limit(this.value);">
+                  {{ form.lower_limit(class="form-control", placeholder="50") }}
                 </div>
                 <div class="col-md-3">
-                  <input type="text" class="form-control" id="upper-limit" name="upper-limit" placeholder="50%" onchange="update_upper_limit(this.value);">
+                  {{ form.upper_limit(class="form-control", placeholder="50") }}
                 </div>
                 <div class="col-md-1">&nbsp;</div>
-                <div class="col-md-3" style="text-align: center; margin-top:
-                  -.5em">
+                <div class="col-md-3" style="text-align: center; margin-top: -.5em">
                   <input type="hidden" id="amount" name="amount" value="2000">
                   <script
-                    src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+                    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                     data-key="{{ config['STRIPE_PUBLISHABLE_KEY'] }}"
                     data-image="http://www.extremetech.com/wp-content/uploads/2013/08/bitcoin1.jpg"
                     data-name="BitRich"
                     data-description="A single, non-refundable deposit."
-                    data-email="{{ user['email'] }}"
+                    data-email="{{ current_user.email }}"
                     data-amount="2000">
                   </script>
                 </div>
@@ -51,29 +50,34 @@
       <div class="row">
         <div class="col-md-12">
           <h2>Current Investments</h2>
-          {% for investment in user.custom_data['investments'] %}
-            <h3>ID: {{ investment['id'] }} <i>({{ investment['created'] }})</i></h3>
-            <div id="p">
-              <div class="row">
-                <label for="lower-limit" class="col-md-3">Lower Limit</label>
-                <label class="col-md-3">Upper Limit</label>
-                <div class="col-md-1">&nbsp;</div>
-                <label class="col-md-3">Current Value</label>
+          {% if current_user.investments %}
+            {% for investment in current_user.investments %}
+              <h3>ID: {{ investment.id }} <i>({{ investment.created_at.strftime('%Y-%m-%d %H:%M') }})</i></h3>
+              <div id="p">
+                <div class="row">
+                  <label class="col-md-3">Lower Limit</label>
+                  <label class="col-md-3">Upper Limit</label>
+                  <div class="col-md-1">&nbsp;</div>
+                  <label class="col-md-3">Current Value</label>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <input type="text" class="form-control" value="{{ investment.lower_limit }}%" readonly>
+                  </div>
+                  <div class="col-md-3">
+                    <input type="text" class="form-control" value="{{ investment.upper_limit }}%" readonly>
+                  </div>
+                  <div class="col-md-1">&nbsp;</div>
+                  <div class="col-md-3">
+                    <input type="text" class="form-control special-input" value="${{ '%0.2f' % investment.current_value|float }}" readonly>
+                  </div>
+                </div>
               </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['lower_limit'] * (investment['deposit_amount_usd'] / 100))|float  }}%" readonly>
-                </div>
-                <div class="col-md-3">
-                  <input type="text" class="form-control" placeholder="{{ '%d' % (investment['upper_limit'] * (investment['deposit_amount_usd'] / 100))|float }}%" readonly>
-                </div>
-                <div class="col-md-1">&nbsp;</div>
-                <div class="col-md-3">
-                  <input type="text" class="form-control special-input" placeholder="${{ '%0.2f' % investment['current_value']|float }}" readonly>
-                </div>
-            </div>
-          </div>
-        {% endfor %}
+            {% endfor %}
+          {% else %}
+            <p>No investments yet. Make your first deposit above!</p>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

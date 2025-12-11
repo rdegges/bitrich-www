@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-
 {% block body %}
   <div class="register">
     <div class="row">
@@ -10,19 +9,32 @@
       </div>
       <div class="col-lg-6 col-lg-offset-3">
         <form class="bs-example form-horizontal" method="post" action="">
+          {{ form.hidden_tag() }}
           <fieldset>
-            {% if error %}
-              <div class="alert alert-dismissable alert-danger register-fail">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                {{ error }}
-              </div>
-            {% endif %}
             <div class="omgform">
               <div class="form-group">
-                <input type="email" class="form-control" id="email" name="email" placeholder="Email" autofocus>
+                {{ form.email(class="form-control", placeholder="Email", autofocus=true) }}
+                {% if form.email.errors %}
+                  <div class="text-danger">
+                    {% for error in form.email.errors %}<small>{{ error }}</small>{% endfor %}
+                  </div>
+                {% endif %}
               </div>
               <div class="form-group">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                {{ form.password(class="form-control", placeholder="Password") }}
+                {% if form.password.errors %}
+                  <div class="text-danger">
+                    {% for error in form.password.errors %}<small>{{ error }}</small>{% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="form-group">
+                {{ form.confirm_password(class="form-control", placeholder="Confirm Password") }}
+                {% if form.confirm_password.errors %}
+                  <div class="text-danger">
+                    {% for error in form.confirm_password.errors %}<small>{{ error }}</small>{% endfor %}
+                  </div>
+                {% endif %}
               </div>
               <div class="form-group creatish">
                 <button type="submit" class="btn btn-primary">Create Account</button>
